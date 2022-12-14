@@ -6,8 +6,8 @@ import urequests
 import urepl
 import json
 
-user = 'hwiguna'
-repository = 'HariFun_166_Morphing_Clock'
+user = 'turfptax'
+repository = 'ugit'
 giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/master?recursive=1'
 
