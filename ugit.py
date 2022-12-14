@@ -1,24 +1,18 @@
 #ugit
-# Get Github master micropython files and download them to your board
-# Change user and repository variable to your own
+# Get Github Updated micropython update
 
 import os
 import urequests
 import urepl
 import json
 
-# Change user to github user and repository to repository
-# Had to feature my friends cool non-python code
-
-user = 'hwiguna'
-repository = 'HariFun_166_Morphing_Clock'
-
+user = 'turfptax'
+repository = 'ugit'
 giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/master?recursive=1'
 raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
-# need method of connecting to wifi already in code
-#wlan = urepl.wificonnect()
+wlan = urepl.wificonnect()
 
 def pull(f_path,giturl=giturl):
   #files = os.listdir()
@@ -41,16 +35,18 @@ def pull_all_files(tree=call_trees_url,raw = raw):
         os.mkdir(i['path'])
       except:
         print('failed to make directory may already exist')
-    else:
+    elif i['path'] != '.gitignore':
       pull(i['path'],raw + i['path'])
       try:
-        check.append(i['path'].split('/')[-1])
+        check.append(i['path'])
       except:
         print('no slash or extension ok')
   # delete files not in tree
-  return tree
+  return check
 
-tree = pull_all_files()
+check = pull_all_files()
+
+
 for i in tree['tree']:
   print(i['path'])
   
