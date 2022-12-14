@@ -17,14 +17,19 @@ giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
 raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
-wlan = urepl.wificonnect()
-
 def pull(f_path,giturl=giturl):
   #files = os.listdir()
   r = urequests.get(giturl)
-  new_file = open(f_path, 'w')
-  new_file.write(r.content.decode('utf-8'))
-  new_file.close()
+  try:
+    new_file = open(f_path, 'w')
+    new_file.write(r.content.decode('utf-8'))
+    new_file.close()
+  except:
+    print('decode fail try adding non-code files to .gitignore')
+    try:
+      new_file.close()
+    except:
+      print('tried to close new_file to save memory durring raw file decode')
   
 def pull_all_files(tree=call_trees_url,raw = raw):
   r = urequests.get(tree,headers={'User-Agent': 'ugit-turfptax'})
@@ -52,10 +57,5 @@ def pull_all_files(tree=call_trees_url,raw = raw):
   # delete files not in tree
   return check
 
-check = pull_all_files()
-
-
-for i in tree['tree']:
-  print(i['path'])
   
 
