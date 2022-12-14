@@ -6,28 +6,42 @@ import urequests
 import urepl
 import json
 
-user = 'turfptax'
-repository = 'ugit'
+user = 'hwiguna'
+repository = 'HariFun_166_Morphing_Clock'
 giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/master?recursive=1'
+raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
 wlan = urepl.wificonnect()
 
-def pull(f,giturl=giturl):
+def pull(f_path,giturl=giturl):
   #files = os.listdir()
   r = urequests.get(giturl)
   first_line = r.content.decode('utf-8').split('\n')[0]
-  filename = giturl.split('/')[-1]
-  new_file = open(filename, 'w')
+  new_file = open(f_path, 'w')
   new_file.write(r.content.decode('utf-8'))
-  #new_files = os.listdir()
-  #added = list(set(new_files)-set(files))
+  new_file.close()
   
-def pull_all_files(tree=call_trees_url):
+def pull_all_files(tree=call_trees_url,raw = raw):
   r = urequests.get(tree,headers={'User-Agent': 'ugit-turfptax'})
   #^^^Requires user-agent header otherwise 403
   #print(r.content)
   tree = json.loads(r.content.decode('utf-8'))
+  check = []
+  # download and save all files
+  for i in tree['tree']:
+    if i['type'] == 'tree':
+      try:
+        os.mkdir(i['path'])
+      except:
+        print('failed to make directory may already exist')
+    else:
+      pull(i['path'],raw + i['path'])
+      try:
+        check.append(i['path'].split('/')[-1])
+      except:
+        print('no slash or extension ok')
+  # delete files not in tree
   return tree
 
 tree = pull_all_files()
