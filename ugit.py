@@ -1,5 +1,6 @@
 #ugit
-# Get Github Updated micropython update
+# Get Github master micropython files and download them to your board
+# Change user and repository variable to your own
 
 import os
 import urequests
