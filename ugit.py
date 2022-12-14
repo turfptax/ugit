@@ -6,13 +6,18 @@ import urequests
 import urepl
 import json
 
+# Change user to github user and repository to repository
+# Had to feature my friends cool non-python code
+
 user = 'hwiguna'
 repository = 'HariFun_166_Morphing_Clock'
+
 giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/master?recursive=1'
 raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
-wlan = urepl.wificonnect()
+# need method of connecting to wifi already in code
+#wlan = urepl.wificonnect()
 
 def pull(f_path,giturl=giturl):
   #files = os.listdir()
