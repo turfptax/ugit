@@ -9,7 +9,7 @@ import json
 user = 'turfptax'
 repository = 'ugit'
 giturl = 'https://github.com/{user}/{repository}'
-call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/master?recursive=1'
+call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
 raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
 wlan = urepl.wificonnect()
