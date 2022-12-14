@@ -3,7 +3,6 @@
 
 import os
 import urequests
-import urepl
 import json
 
 # CHANGE TO YOUR REPOSITORY INFO
