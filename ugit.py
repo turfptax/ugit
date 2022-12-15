@@ -88,11 +88,12 @@ def build_internal_tree():
 
 def add_to_tree(f_path):
   global tree
-  try:
-    folder = os.listdir(f_path)
-  except:
-    folder = False
-  if not folder:
+  if is_directory(f_path) and os.listdir(f_path) >= 1:
+    os.chdir(f_path)
+    for i in folder:
+      add_to_tree(i)
+    os.chdir('..')
+  else:
     print(f_path)
     if os.getcwd() != '/':
       subfile_path = os.getcwd() + '/' + f_path
@@ -100,16 +101,9 @@ def add_to_tree(f_path):
       subfile_path = os.getcwd() + f_path
     try:
       tree.append([subfile_path,get_hash(subfile_path)])
-    except:
-      print('file may be folder')
-  else:
-    if os.listdir(f_path):
-      os.chdir(f_path)
-      for i in folder:
-        add_to_tree(i)
-      os.chdir('..')
-    else:
-      print(f'{f_path} folder is empty')
+    except OSError:
+      print(f'{f_path} could not be added to tree')
+
       
 
 def check_tree(file):
@@ -131,4 +125,11 @@ def get_hash(file):
   sha1obj = hashlib.sha1(r_file)
   hash = sha1obj.digest()
   return(hash.hex())
+  
+def is_directory(file):
+  try:
+    return (os.stat(file)[0] and 0x4000 != 0)
+  except OSError:
+    return False
+  
   
