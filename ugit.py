@@ -1,3 +1,4 @@
+
 #ugit
 # Get Github Updated micropython update
 
@@ -5,11 +6,16 @@ import os
 import urequests
 import json
 import hashlib
+import machine
+import time
+
+
+global tree
 
 # CHANGE TO YOUR REPOSITORY INFO
 # Also check out my friends amazing work
 user = 'turfptax'
-repository = 'ugit_test'
+repository = 'ugit'
 
 # Static URLS
 # GitHub uses main instead of master for python repository trees
@@ -32,6 +38,7 @@ def pull(f_path,giturl=giturl):
       print('tried to close new_file to save memory durring raw file decode')
   
 def pull_all_files(tree=call_trees_url,raw = raw):
+  os.chdir('/')
   internal_tree = build_internal_tree()
   r = urequests.get(tree,headers={'User-Agent': 'ugit-turfptax'})
   #^^^Requires user-agent header otherwise 403
@@ -67,32 +74,44 @@ def pull_all_files(tree=call_trees_url,raw = raw):
       except:
         print(f'failed to delete: {i[0]}')
         check.append(f'{i[0]} failed to delete')
-  return check
+  time.sleep(10)
+  machine.reset()
+  #return check instead return with global
 
   
 def build_internal_tree():
+  global tree
   tree = []
   os.chdir('/')
   for i in os.listdir():
-    try:
-      folder = os.listdir(i)
-    except:
-      folder = False
-    if not folder:
-      file_path = os.getcwd() + i
-      tree.append([file_path,get_hash(file_path)])
-    else:
-      os.chdir(i)
-      for x in folder:
-        subfile_path = os.getcwd()+'/' +x
-        tree.append([subfile_path,get_hash(subfile_path)])
-      os.chdir('..')
+    add_to_tree(i)
   return(tree)
+
+def add_to_tree(f_path):
+  global tree
+  try:
+    folder = os.listdir(f_path)
+  except:
+    folder = False
+  if not folder:
+    print(f_path)
+    subfile_path = os.getcwd() + '/' + f_path
+    tree.append([subfile_path,get_hash(subfile_path)])
+  else:
+    if os.listdir(f_path):
+      os.chdir(f_path)
+      for i in folder:
+        add_to_tree(i)
+      os.chdir('..')
+    else:
+      print(f'folder is empty')
   
 def get_hash(file):
+  print(file)
   o_file = open(file)
   r_file = o_file.read()
   sha1obj = hashlib.sha1(r_file)
   hash = sha1obj.digest()
   return(hash.hex())
   
+
