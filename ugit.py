@@ -32,6 +32,7 @@ def pull(f_path,giturl=giturl):
       print('tried to close new_file to save memory durring raw file decode')
   
 def pull_all_files(tree=call_trees_url,raw = raw):
+  internal_tree = build_internal_tree()
   r = urequests.get(tree,headers={'User-Agent': 'ugit-turfptax'})
   #^^^Requires user-agent header otherwise 403
   #print(r.content)
@@ -49,12 +50,23 @@ def pull_all_files(tree=call_trees_url,raw = raw):
         os.remove(i['path'])
       except:
         print('failed to delete old file')
+      try:
+        internal_tree.remove(i['path'])
+      except:
+        print(f'{i["path"]} not in internal_tree')
       pull(i['path'],raw + i['path'])
       try:
-        check.append(i['path'])
+        check.append(i['path'] + ' updated')
       except:
         print('no slash or extension ok')
   # delete files not in tree
+  if len(internal_tree) != 0:
+    for i in internal_tree:
+      try:
+        os.remove(i)
+      except:
+        print(f'failed to delete: {i}')
+        check.append(f'{i} failed to delete')
   return check
 
   
