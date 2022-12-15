@@ -1,8 +1,8 @@
 # ugit
 
-!!!!!!! DON'T USE UNTIL YOU HAVE TESTED ON A BOARD THAT DOESN'T HAVE CODE YOU HAVENT SAVED !!!!!!!!!!!!!
+#!!!!!!! DON'T USE UNTIL YOU HAVE TESTED ON A BOARD THAT DOESN'T HAVE CODE YOU HAVENT SAVED !!!!!!!!!!!!!
 
-Update: 12-15-2022
+#Update: 12-15-2022
 
 Bug0: It currently adds extra line breaks after downloading the files from github.
 
@@ -21,7 +21,7 @@ and this module will grab all of the files from the main branch and save them on
 working on getting it to be able to delete files too but it is not finished.
 
 
-USAGE:
+#USAGE:
 
 #Change user variable and repository variable to your github information on ugit.py
 
@@ -31,7 +31,7 @@ import ugit
 
 ugit.pull_all_files()
 
-TESTING:
+#TESTING:
 import ugit
 
 ugit.build_internal_tree()
