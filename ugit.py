@@ -63,13 +63,7 @@ def pull_all_files(tree=call_trees_url,raw = raw):
       except:
         print('no slash or extension ok')
   # delete files not in Github tree
-  if len(internal_tree) != 0:
-    for i in internal_tree:
-      try:
-        os.remove(i[0])
-      except:
-        print(f'failed to delete: {i[0]}')
-        check.append(f'{i[0]} failed to delete')
+  # Needs work :(
   logfile = ('ugit_log.py','w')
   logfile.write(str(check))
   logfile.close()
