@@ -88,11 +88,13 @@ def build_internal_tree():
 
 def add_to_tree(f_path):
   global tree
-  if is_directory(f_path) and os.listdir(f_path) >= 1:
-    os.chdir(f_path)
-    for i in folder:
-      add_to_tree(i)
-    os.chdir('..')
+  if is_directory(f_path):
+    if os.listdir(f_path) >= 1:
+      os.chdir(f_path)
+      folder = os.listdir(f_path)
+      for i in folder:
+        add_to_tree(i)
+      os.chdir('..')
   else:
     print(f_path)
     if os.getcwd() != '/':
@@ -103,8 +105,6 @@ def add_to_tree(f_path):
       tree.append([subfile_path,get_hash(subfile_path)])
     except OSError:
       print(f'{f_path} could not be added to tree')
-
-      
 
 def check_tree(file):
   global tree
