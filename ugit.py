@@ -4,11 +4,12 @@
 import os
 import urequests
 import json
+import hashlib
 
 # CHANGE TO YOUR REPOSITORY INFO
 # Also check out my friends amazing work
-user = 'hwiguna'
-repository = 'HariFun_208_Polymorph'
+user = 'turfptax'
+repository = 'ugit_test'
 
 # Static URLS
 # GitHub uses main instead of master for python repository trees
@@ -57,4 +58,29 @@ def pull_all_files(tree=call_trees_url,raw = raw):
   return check
 
   
-
+def build_internal_tree():
+  tree = []
+  os.chdir('/')
+  for i in os.listdir():
+    try:
+      folder = os.listdir(i)
+    except:
+      folder = False
+    if not folder:
+      file_path = os.getcwd() + i
+      tree.append([file_path,get_hash(file_path)])
+    else:
+      os.chdir(i)
+      for x in folder:
+        subfile_path = os.getcwd()+'/' +x
+        tree.append([subfile_path,get_hash(subfile_path)])
+      os.chdir('..')
+  return(tree)
+  
+def get_hash(file):
+  o_file = open(file)
+  r_file = o_file.read()
+  sha1obj = hashlib.sha1(r_file)
+  hash = sha1obj.digest()
+  return(hash.hex())
+  
