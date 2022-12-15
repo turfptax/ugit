@@ -56,11 +56,7 @@ def pull_all_files(tree=call_trees_url,raw = raw):
         os.remove(i['path'])
       except:
         print('failed to delete old file')
-      try:
-        internal_tree.remove(i['path'])
-      except:
-        print(f'{i["path"]} not in internal_tree')
-        check.append(f'{i["path"]} not in internal_tree')
+      check_tree(i['path']) 
       pull(i['path'],raw + i['path'])
       try:
         check.append(i['path'] + ' updated')
@@ -108,6 +104,19 @@ def add_to_tree(f_path):
       os.chdir('..')
     else:
       print(f'{f_path} folder is empty')
+      
+
+def check_tree(file):
+  global tree
+  new_tree = []
+  for i in tree:
+    if i[0] == file:
+      print(f'{file} found in tree')
+    else:
+      new_tree.append(i)
+      print(f'{file} not in internal_tree')
+  tree = new_tree
+      
   
 def get_hash(file):
   print(file)
