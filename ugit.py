@@ -1,5 +1,6 @@
 
 
+
 #ugit
 # Get Github Updated micropython update
 
@@ -87,12 +88,16 @@ def add_to_tree(f_path):
   global tree
   if is_directory(f_path):
     if len(os.listdir(f_path)) >= 1:
-      print(f_path)
-      os.chdir(f_path)
-      folder = os.listdir(f_path)
-      for i in folder:
-        add_to_tree(i)
-      os.chdir('..')
+      print(f'line 91 f_path:{f_path}')
+      try:
+        os.chdir(f_path)
+        folder = os.listdir(f_path)
+        for i in folder:
+          add_to_tree(i)
+        os.chdir('..')
+      except:
+        print(f'failed to open folder {f_path}')
+        os.chdir('/')
   else:
     print(f_path)
     if os.getcwd() != '/':
@@ -130,4 +135,5 @@ def is_directory(file):
     return (os.stat(file)[8] == 0)
   except:
     return directory
+
 
