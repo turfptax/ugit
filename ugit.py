@@ -94,8 +94,14 @@ def add_to_tree(f_path):
     folder = False
   if not folder:
     print(f_path)
-    subfile_path = os.getcwd() + '/' + f_path
-    tree.append([subfile_path,get_hash(subfile_path)])
+    if os.getcwd() != '/':
+      subfile_path = os.getcwd() + '/' + f_path
+    else:
+      subfile_path = os.getcwd() + f_path
+    try:
+      tree.append([subfile_path,get_hash(subfile_path)])
+    except:
+      print('file may be folder')
   else:
     if os.listdir(f_path):
       os.chdir(f_path)
