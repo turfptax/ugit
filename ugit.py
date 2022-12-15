@@ -127,5 +127,3 @@ def is_directory(file):
     directory = (os.stat(file)[0] and os.stat(file)[7] == 0)
   except:
     return directory
-  
-  
