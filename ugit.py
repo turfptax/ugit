@@ -63,10 +63,10 @@ def pull_all_files(tree=call_trees_url,raw = raw):
   if len(internal_tree) != 0:
     for i in internal_tree:
       try:
-        os.remove(i)
+        os.remove(i[0])
       except:
-        print(f'failed to delete: {i}')
-        check.append(f'{i} failed to delete')
+        print(f'failed to delete: {i[0]}')
+        check.append(f'{i[0]} failed to delete')
   return check
 
   
