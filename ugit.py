@@ -1,3 +1,5 @@
+
+
 #ugit
 # Get Github Updated micropython update
 
@@ -63,6 +65,7 @@ def pull_all_files(tree=call_trees_url,raw = raw):
       except:
         print('no slash or extension ok')
   # delete files not in Github tree
+
   # Needs work :(
   logfile = ('ugit_log.py','w')
   logfile.write(str(check))
@@ -124,6 +127,7 @@ def get_hash(file):
 def is_directory(file):
   directory = False
   try:
-    directory = (os.stat(file)[0] and os.stat(file)[7] == 0)
+    return (os.stat(file)[8] == 0)
   except:
     return directory
+
