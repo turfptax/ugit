@@ -1,110 +1,115 @@
-# Simple urepl like module
-# takes care of connecting to wifi or creating your own
-# written for the Rapsberry Pi Pico W
-import socket
-import network
+#ugit
+# Get Github Updated micropython update
+
+import os
+import urequests
+import json
+import hashlib
+import machine
 import time
 
-global ssid
-global server_ip
-global password
-global client_ip
-global port
 
+global tree
 
-# Default Network to connect using wificonnect()
-# Change these settings or use the built in functions
-ssid = 'ALLO7D31E'
-password = '1891067549'
-port = 3145
-server_ip = '0.0.0.0'
-client_ip = '0.0.0.0'
+# CHANGE TO YOUR REPOSITORY INFO
+# Also check out my friends amazing work
+user = 'turfptax'
+repository = 'ugit'
 
+# Static URLS
+# GitHub uses main instead of master for python repository trees
+giturl = 'https://github.com/{user}/{repository}'
+call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
+raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
-def wificonnect(ssid=ssid,password=password):
-    print('Use like: urepl.wificonnect(SSID,Password)')
-    print('otherwise uses default global ssid,password')
-    global server_ip
-    wlan = network.WLAN(network.STA_IF)
-    wlan.active(False)
-    wlan.active(True)
-    wlan.connect(ssid,password)
-    while not wlan.isconnected():
-        pass
-    server_ip = wlan.ifconfig()[0]
-    print('Wifi Connected!!')
-    print(f'SSID: {ssid}')
-    print('Local Ip Address, Subnet Mask, Default Gateway, Listening on...')
-    print(wlan.ifconfig())
-    return wlan
+def pull(f_path,giturl=giturl):
+  #files = os.listdir()
+  r = urequests.get(giturl)
+  try:
+    new_file = open(f_path, 'w')
+    new_file.write(r.content.decode('utf-8'))
+    new_file.close()
+  except:
+    print('decode fail try adding non-code files to .gitignore')
+    try:
+      new_file.close()
+    except:
+      print('tried to close new_file to save memory durring raw file decode')
+  
+def pull_all_files(tree=call_trees_url,raw = raw):
+  os.chdir('/')
+  internal_tree = build_internal_tree()
+  r = urequests.get(tree,headers={'User-Agent': 'ugit-turfptax'})
+  #^^^Requires user-agent header otherwise 403
+  #print(r.content)
+  tree = json.loads(r.content.decode('utf-8'))
+  check = []
+  # download and save all files
+  for i in tree['tree']:
+    if i['type'] == 'tree':
+      try:
+        os.mkdir(i['path'])
+      except:
+        print('failed to make directory may already exist')
+    elif i['path'] != '.gitignore':
+      try:
+        os.remove(i['path'])
+      except:
+        print('failed to delete old file')
+      try:
+        internal_tree.remove(i['path'])
+      except:
+        print(f'{i["path"]} not in internal_tree')
+      pull(i['path'],raw + i['path'])
+      try:
+        check.append(i['path'] + ' updated')
+      except:
+        print('no slash or extension ok')
+  # delete files not in tree
+  if len(internal_tree) != 0:
+    for i in internal_tree:
+      try:
+        os.remove(i[0])
+      except:
+        print(f'failed to delete: {i[0]}')
+        check.append(f'{i[0]} failed to delete')
+  time.sleep(10)
+  machine.reset()
+  #return check instead return with global
 
-def wap(pico_ssid = "PicoW",pico_pass = "picopico"):
-    global server_ip
-    print('Use: like urepl.wap(SSID,Password)')
-    print('otherwise uses default Picow,picopico')
-    #Create a network and WAP Wireless Access Point
-    ap = network.WLAN(network.AP_IF)
-    ap.config(essid=pico_ssid,password=pico_pass)
-    ap.active(False) #rare instances keep this on
-    ap.active(True)
-    while ap.active == False:
-        pass
-    print('Wireless Access Point (WAP) Created!!')
-    print(f'SSID: {pico_ssid}')
-    print(f'PASSWORD: {pico_pass}')
-    print('Local Ip Address, Subnet Mask, Default Gateway, Listening on...')
-    server_ip = ap.ifconfig()[0]
-    print(ap.ifconfig())
+  
+def build_internal_tree():
+  global tree
+  tree = []
+  os.chdir('/')
+  for i in os.listdir():
+    add_to_tree(i)
+  return(tree)
 
-def send(data,client_ip=client_ip,port=port):
-    d = b''
-    d += data
-    s = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-    #s.send(d,(client_ip,port))
-    print(s)
-    s.close
-
-# Akin to input() on normal python
-# Will open a UDP socket and wait for a packet
-# Will keep code from running 
-def receive():
-    print('tried')
-    global client_ip
-    global port
-    global server_ip
-    print('Use like urepl.receive(server_ip,port)')
-    r = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-    r.bind((server_ip,port))
-    print(f'waiting to receive on {server_ip}:{port}')
-    data,addr = r.recvfrom(1024)
-    client_ip = addr
-    r.close()
-    return data
-
-def printdetails():
-    global ssid
-    global server_ip
-    global password
-    global client_ip
-    global port
-    print(f'ssid: {ssid}')
-    print(f'server_ip: {server_ip}')
-    print(f'client_ip: {client_ip}')
-    print(f'port: {port}')
-    
-def set_client_ip(client):
-    global client_ip
-    client_ip = client
-    print(f'You set the client_ip to: {client_ip}')
-    printdetails()
-
-def set_port(p):
-    global port
-    port = p
-    print(f'You set the port to: {port}')
-    printdetails()
-    
-
-print('--upython mini wifi and repl ish thing--')
-print('wificonnect, wap, send, receive, getipaddress, printdetails')
-
+def add_to_tree(f_path):
+  global tree
+  try:
+    folder = os.listdir(f_path)
+  except:
+    folder = False
+  if not folder:
+    print(f_path)
+    subfile_path = os.getcwd() + '/' + f_path
+    tree.append([subfile_path,get_hash(subfile_path)])
+  else:
+    if os.listdir(f_path):
+      os.chdir(f_path)
+      for i in folder:
+        add_to_tree(i)
+      os.chdir('..')
+    else:
+      print(f'folder is empty')
+  
+def get_hash(file):
+  print(file)
+  o_file = open(file)
+  r_file = o_file.read()
+  sha1obj = hashlib.sha1(r_file)
+  hash = sha1obj.digest()
+  return(hash.hex())
+  
