@@ -1,9 +1,13 @@
 # ugit
 
 !!!!!!! DON'T USE UNTIL YOU HAVE TESTED ON A BOARD THAT DOESN'T HAVE CODE YOU HAVENT SAVED !!!!!!!!!!!!!
+
 Update: 12-15-2022
+
 Bug0: It currently adds extra line breaks after downloading the files from github.
+
 Bug1: It has a hard time navigating sub folders at the moment trying to fix
+
 Bug2: Hash function not implemented because linebreaks mess up hash. It will always think there is an update
 
 Requests: Any testors will make the process of debugging quicker.
