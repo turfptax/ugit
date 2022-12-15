@@ -90,6 +90,7 @@ def add_to_tree(f_path):
   global tree
   if is_directory(f_path):
     if len(os.listdir(f_path)) >= 1:
+      print(f_path)
       os.chdir(f_path)
       folder = os.listdir(f_path)
       for i in folder:
@@ -127,9 +128,10 @@ def get_hash(file):
   return(hash.hex())
   
 def is_directory(file):
+  directory = False
   try:
-    return (os.stat(file)[0] and 0x4000 != 0)
-  except OSError:
-    return False
+    directory = (os.stat(file)[0] and os.stat(file)[7] == 0)
+  except:
+    return directory
   
   
