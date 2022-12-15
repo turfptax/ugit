@@ -65,7 +65,7 @@ def pull_all_files(tree=call_trees_url,raw = raw):
   # delete files not in Github tree
 
   # Needs work :(
-  logfile = ('ugit_log.py','w')
+  logfile = open('ugit_log.py','w')
   logfile.write(str(check))
   logfile.close()
   time.sleep(10)
