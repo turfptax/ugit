@@ -89,7 +89,7 @@ def build_internal_tree():
 def add_to_tree(f_path):
   global tree
   if is_directory(f_path):
-    if os.listdir(f_path) >= 1:
+    if len(os.listdir(f_path)) >= 1:
       os.chdir(f_path)
       folder = os.listdir(f_path)
       for i in folder:
