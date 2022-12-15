@@ -102,6 +102,7 @@ def add_to_tree(f_path):
     else:
       subfile_path = os.getcwd() + f_path
     try:
+      print(f'sub_path: {subfile_path}')
       tree.append([subfile_path,get_hash(subfile_path)])
     except OSError:
       print(f'{f_path} could not be added to tree')
@@ -132,5 +133,3 @@ def is_directory(file):
     return (os.stat(file)[8] == 0)
   except:
     return directory
-
-
