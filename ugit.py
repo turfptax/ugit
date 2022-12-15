@@ -1,6 +1,3 @@
-
-
-
 #ugit
 # Get Github Updated micropython update
 
