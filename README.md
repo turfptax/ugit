@@ -36,3 +36,4 @@ ugit.is_directory() is the check for this.
 Github requires a urequests header otherwise it will give you a 4-3 error.
 Github uses main instead of master for URL api conncetion to repository tree. See source code in ugit.py for more informaiton.
 
+# Repository urepl is used to connect to the internet, it is another library i'm working on for UDP ascyncronus REPL. Check it out on github to learn more.
