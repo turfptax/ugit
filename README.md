@@ -20,7 +20,9 @@ and this module will grab all of the files from the main branch and save them on
 # USAGE:
 # Change user variable and repository variable to your github information on ugit_config.py
 import ugit
-//connect to network somehow
+
+!connect to network somehow
+
 ugit.pull_all_files()
 
 # TESTING:
