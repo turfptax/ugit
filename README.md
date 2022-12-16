@@ -29,8 +29,8 @@ ugit.pull_all_files()
 import ugit
 ugit.build_internal_tree()
 This is how it see's what is on the board and grabs the hash value of files
-# ugit.is_directory() is the check for this.
-# Also belive there is a recursion error not sending the right full path in recursion.
+
+ugit.is_directory() is the check for this.
 
 # Things to note for developers:
 Github requires a urequests header otherwise it will give you a 4-3 error.
