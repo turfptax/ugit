@@ -1,6 +1,8 @@
 
-#ugit
-# Get Github Updated micropython update
+# ugit
+# micropython OTA update from github
+# Created by TURFPTAx for the openmuscle project
+# Check out https://openmuscle.org for more info
 
 import os
 import urequests
