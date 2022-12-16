@@ -3,12 +3,9 @@
 # !!!!!!! TEST ON BOARD BEFORE DEPLOYMENT !!!
 
 # Update: 12-16-2022
-# Bug0:
-It currently adds extra line breaks after downloading the files from github. This is an error with REPL environments from upycraft, Thonny view the data properly. There is still incorrect hash values calculated on the board. Am working on a fix using Githubs last hash value and saving in the config file instead of calculating the has on the micropython board.
-# Bug1:
-It has a hard time navigating sub folders at the moment trying to fix. 
-	Subfolders that don't contain files cause error, fix needed.
-# Bug2:
+
+Multi-Line error with REPL environments from upycraft, Thonny view the data properly. There is still incorrect hash values calculated on the board. Am working on a fix using Githubs last hash value and saving in the config file instead of calculating the has on the micropython board.
+
 Hash function not implemented because it never matches up with github, see Bug0 for more details.
 Requests: Any testors will make the process of debugging quicker.
 
