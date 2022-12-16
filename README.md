@@ -15,8 +15,7 @@ Requests: Any testors will make the process of debugging quicker.
 # Micropython OTA updates
 load ugit.py and ugit_config.py into your ESP32 or any micropython internet enabled device
 Change the user and repository variable to your github project
-and this module will grab all of the files from the main branch and save them on your board
-working on getting it to be able to delete files too but it is not finished.
+and this module will grab all of the files from the main branch and save them on your board.
 
 # USAGE:
 # Change user variable and repository variable to your github information on ugit_config.py
