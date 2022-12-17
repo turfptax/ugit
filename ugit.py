@@ -106,7 +106,7 @@ def add_to_tree(dir_item):
 def check_tree(file):
   global internal_tree
   new_tree = []
-  for i in tree:
+  for i in internal_tree:
     if i[0] == file:
       print(f'{file} found in tree')
     else:
