@@ -18,6 +18,7 @@ global tree
 # Also check out my friends amazing work
 user = ugit_config.user
 repository = ugit_config.repository
+ignore = ugit_config.ignore_files
 
 # Static URLS
 # GitHub uses main instead of master for python repository trees
@@ -25,9 +26,11 @@ giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
 raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
-def pull(f_path,giturl=giturl):
+def pull(f_path,raw_url):
+  print('pulls a single file from github')
+  print('use like ugit.pull(file_path)')
   #files = os.listdir()
-  r = urequests.get(giturl)
+  r = urequests.get(raw_url)
   try:
     new_file = open(f_path, 'w')
     new_file.write(r.content.decode('utf-8'))
@@ -41,11 +44,7 @@ def pull(f_path,giturl=giturl):
   
 def pull_all_files(tree=call_trees_url,raw = raw):
   os.chdir('/')
-  internal_tree = build_internal_tree()
-  # Github Requires user-agent header otherwise 403
-  r = urequests.get(tree,headers={'User-Agent': 'ugit-turfptax'})
-  # Turn Githubs tree into a python dict
-  tree = json.loads(r.content.decode('utf-8'))
+  tree = pull_git_tree()
   check = []
   # download and save all files
   for i in tree['tree']:
@@ -54,17 +53,17 @@ def pull_all_files(tree=call_trees_url,raw = raw):
         os.mkdir(i['path'])
       except:
         print('failed to make directory may already exist')
-    elif i['path'] != '.gitignore':
+    elif i['path'] not in ugit_config.ignore_files:
       try:
         os.remove(i['path'])
       except:
         print('failed to delete old file')
       check_tree(i['path']) 
-      pull(i['path'],raw + i['path'])
       try:
+        pull(i['path'],raw + i['path'])
         check.append(i['path'] + ' updated')
       except:
-        print('no slash or extension ok')
+        check.append(i['path'] + ' failed to pull')
   # delete files not in Github tree
   # Needs work :(
   logfile = open('ugit_log.py','w')
@@ -135,5 +134,22 @@ def is_directory(file):
     return (os.stat(file)[8] == 0)
   except:
     return directory
-
-  #github file 137 line test
+    
+def pull_git_tree(tree_url=call_trees_url,raw = raw):
+  r = urequests.get(tree_url,headers={'User-Agent': 'ugit-turfptax'})
+  # ^^^ Github Requires user-agent header otherwise 403
+  tree = json.loads(r.content.decode('utf-8'))
+  return(tree)
+  
+def parse_git_tree():
+  tree = pull_tree()
+  dirs = []
+  files = []
+  for i in tree['tree']:
+    if i['type'] == 'tree':
+      dirs.append(i['path'])
+    if i['type'] == 'blob':
+      files.append([i['path'],i['sha'],i['mode']])
+  print('dirs:',dirs)
+  print('files:',files)
+   
