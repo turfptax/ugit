@@ -1,6 +1,5 @@
 
 
-
 # ugit
 # micropython OTA update from github
 # Created by TURFPTAx for the openmuscle project
@@ -61,7 +60,6 @@ def pull_all_files(tree=call_trees_url,raw = raw):
         os.remove(i['path'])
       except:
         print('failed to delete old file')
-      check_tree(i['path']) 
       try:
         pull(i['path'],raw + i['path'])
         check.append(i['path'] + ' updated')
@@ -105,6 +103,7 @@ def add_to_tree(dir_item):
       print(f'{dir_item} could not be added to tree')
 
 
+  
 def get_hash(file):
   print(file)
   o_file = open(file)
