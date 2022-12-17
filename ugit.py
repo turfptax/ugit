@@ -1,4 +1,5 @@
 
+
 # ugit
 # micropython OTA update from github
 # Created by TURFPTAx for the openmuscle project
@@ -11,6 +12,7 @@ import hashlib
 import machine
 import time
 import ugit_config
+
 
 global internal_tree
 
@@ -102,7 +104,7 @@ def add_to_tree(dir_item):
       print(f'{dir_item} could not be added to tree')
 
 def check_tree(file):
-  global tree
+  global internal_tree
   new_tree = []
   for i in tree:
     if i[0] == file:
@@ -110,7 +112,7 @@ def check_tree(file):
     else:
       new_tree.append(i)
       print(f'{file} not in internal_tree')
-  tree = new_tree
+  internal_tree = new_tree
       
   
 def get_hash(file):
@@ -135,7 +137,7 @@ def pull_git_tree(tree_url=call_trees_url,raw = raw):
   return(tree)
   
 def parse_git_tree():
-  tree = pull_tree()
+  tree = pull_git_tree()
   dirs = []
   files = []
   for i in tree['tree']:
