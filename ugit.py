@@ -12,7 +12,7 @@ import machine
 import time
 import ugit_config
 
-global tree
+global internal_tree
 
 # CHANGE TO YOUR REPOSITORY INFO
 # Also check out my friends amazing work
@@ -75,36 +75,33 @@ def pull_all_files(tree=call_trees_url,raw = raw):
 
   
 def build_internal_tree():
-  global tree
-  tree = []
+  global internal_tree
+  internal_tree = []
   os.chdir('/')
   for i in os.listdir():
     add_to_tree(i)
-  return(tree)
+  return(internal_tree)
 
-def add_to_tree(f_path):
-  global tree
-  if is_directory(f_path):
-    if len(os.listdir(f_path)) >= 1:
-      print(f'line 91 f_path:{f_path}')
-      try:
-        os.chdir(f_path)
-        folder = os.listdir(f_path)
-        for i in folder:
-          add_to_tree(i)
-        os.chdir('..')
-      except:
-        print(f'failed to open folder {f_path}')
-        os.chdir('/')
+def add_to_tree(dir_item):
+  global internal_tree
+  if is_directory(dir_item) and len(os.listdir(dir_item)) >= 1:
+    try:
+      os.chdir(dir_item)
+      for i in os.listdir(dir_item):
+        add_to_tree(i)
+      os.chdir('..')
+    except:
+      print(f'failed to open folder {dir_item}')
+      os.chdir('..')
   else:
-    print(f_path)
+    print(dir_item)
     if os.getcwd() != '/':
-      subfile_path = os.getcwd() + '/' + f_path
+      subfile_path = os.getcwd() + '/' + dir_item
     else:
-      subfile_path = os.getcwd() + f_path
+      subfile_path = os.getcwd() + dir_item
     try:
       print(f'sub_path: {subfile_path}')
-      tree.append([subfile_path,get_hash(subfile_path)])
+      internal_tree.append([subfile_path,get_hash(subfile_path)])
     except OSError:
       print(f'{f_path} could not be added to tree')
 
