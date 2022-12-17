@@ -26,9 +26,13 @@ ugit.is_directory() checks if file path is a directory (folder).
 
 # Things to note for developers:
 Github requires a urequests header otherwise it will give you a 403 error.
+
 Github uses main instead of master for URL api conncetion to repository tree. See source code in ugit.py for more informaiton.
+
   NOTE if you are pulling from a non-python repository you made need to change call_trees_url to /master? instead of /main? 
+  
   giturl = 'https://github.com/{user}/{repository}'
+  
   call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
  
   raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
