@@ -9,7 +9,12 @@ Change the user and repository variable to your github project
 and this module will grab all of the files from the main branch and save them on your board.
 
 # USAGE:
-# Change user variable and repository variable to your github information on ugit_config.py
+Change user and repository variable to your github information on ugit_config.py
+
+add files to ignore_files in ugit_config.py to ignore internal files from being overridden
+
+code:
+
 import ugit
 
 !connect to network somehow
@@ -17,7 +22,9 @@ import ugit
 ugit.pull_all_files()
 
 # TESTING:
+
 import ugit
+
 ugit.build_internal_tree() grabs internal file structure
 ugit.pull(local_file_path,raw_file_url) pulls single raw files
 ugit.pull_git_tree() pulls the github file tree from the repository
