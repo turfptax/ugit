@@ -1,5 +1,6 @@
 
 
+
 # ugit
 # micropython OTA update from github
 # Created by TURFPTAx for the openmuscle project
@@ -103,18 +104,7 @@ def add_to_tree(dir_item):
     except OSError:
       print(f'{dir_item} could not be added to tree')
 
-def check_tree(file):
-  global internal_tree
-  new_tree = []
-  for i in internal_tree:
-    if i[0] == file:
-      print(f'{file} found in tree')
-    else:
-      new_tree.append(i)
-      print(f'{file} not in internal_tree')
-  internal_tree = new_tree
-      
-  
+
 def get_hash(file):
   print(file)
   o_file = open(file)
@@ -148,3 +138,4 @@ def parse_git_tree():
   print('dirs:',dirs)
   print('files:',files)
    
+
