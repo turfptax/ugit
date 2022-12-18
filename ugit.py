@@ -5,26 +5,35 @@
 #
 # Pulls files and folders from open github repository
 
-
 import os
 import urequests
 import json
 import hashlib
 import machine
 import time
-import ugit_config
-
+import network
 
 global internal_tree
 
+#### -------------User Variables----------------####
+#### 
+# Default Network to connect using wificonnect()
+ssid = "OpenMuscle"
+password = "3141592653"
+
 # CHANGE TO YOUR REPOSITORY INFO
-# Also check out my friends amazing work
-user = ugit_config.user
-repository = ugit_config.repository
-ignore = ugit_config.ignore_files
+# Repository must be public
+user = 'turfptax'
+repository = 'ugit_test'
+
+# Don't remove ugit.py from the ignore_files unless you know what you are doing :D
+# Put the files you don't want deleted or updated here use '/filename.ext'
+ignore_files = ['/ugit.py']
+ignore = ignore_files
+### -----------END OF USER VARIABLES ----------####
 
 # Static URLS
-# GitHub uses main instead of master for python repository trees
+# GitHub uses 'main' instead of master for python repository trees
 giturl = 'https://github.com/{user}/{repository}'
 call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
 raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
@@ -75,6 +84,9 @@ def pull_all_files(tree=call_trees_url,raw = raw,ignore = ignore):
   # delete files not in Github tree
   if len(internal_tree) > 0:
       print(internal_tree, ' leftover!')
+      for i in internal_tree:
+          os.remove(i)
+          log.append(i + ' removed from int mem')
   logfile = open('ugit_log.py','w')
   logfile.write(str(log))
   logfile.close()
@@ -83,6 +95,20 @@ def pull_all_files(tree=call_trees_url,raw = raw,ignore = ignore):
   machine.reset()
   #return check instead return with global
 
+def wificonnect(ssid=ssid,password=password):
+    print('Use: like ugit.wificonnect(SSID,Password)')
+    print('otherwise uses ssid,password in top of ugit.py code')
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(False)
+    wlan.active(True)
+    wlan.connect(ssid,password)
+    while not wlan.isconnected():
+        pass
+    print('Wifi Connected!!')
+    print(f'SSID: {ssid}')
+    print('Local Ip Address, Subnet Mask, Default Gateway, Listening on...')
+    print(wlan.ifconfig())
+    return wlan
   
 def build_internal_tree():
   global internal_tree
@@ -119,6 +145,11 @@ def get_hash(file):
   sha1obj = hashlib.sha1(r_file)
   hash = sha1obj.digest()
   return(hash.hex())
+
+def get_data_hash(data):
+    sha1obj = hashlib.sha1(data)
+    hash = sha1obj.digest()
+    return(hash.hex())
   
 def is_directory(file):
   directory = False
