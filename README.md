@@ -3,7 +3,7 @@
     <img src="images/logo.png" alt="Logo" width="150" height="150">
     <h1 align="center">Micropython OTA Updates</h1>
   <h3 align="center">Keep your remote ESP32 devices in sync with a github repo.</h3>
-  <h2 align="center">pulls entire github repository onto a micropython board</h2>
+  <h2 align="center">Pulls entire github repository onto a micropython board</h2>
   <p align="center"> Over The Air, with one command: ugit.pull_all()</p>
 </div>
 
@@ -77,7 +77,5 @@ Github uses main instead of master for URL api conncetion to repository tree. Se
   call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
  
   raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
-
-## Repository urepl is used to connect to the internet, it is another library i'm working on for UDP ascyncronus REPL. Check it out on github to learn more.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
