@@ -18,7 +18,7 @@ ugit functions:
 
 With ugit you can clone an entire micropython repository onto the board.
 
-Download `ugit_config.py` and 'ugit.py' to get started.
+Download `ugit_config.py` and `ugit.py` to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
