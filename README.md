@@ -6,7 +6,12 @@
 # Micropython OTA updates
 load ugit.py and ugit_config.py into your ESP32 or any micropython internet enabled device
 Change the user and repository variable to your github project
-and this module will grab all of the files from the main branch and save them on your board.
+and 
+
+# this module will grab all of the files and directories from the main branch and save them on your board. 
+
+use the ugit_config.py file to specify files you want to ignore.
+ugit will also delete files that are not in the github if not put in the ignore_files!
 
 # USAGE:
 Change user and repository variable to your github information on ugit_config.py
