@@ -1,8 +1,9 @@
 <br />
 <div align="center">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  <h3 align="center">ugit OTA github clone to micropython board</h3>
-  <p align="center">Updates the esp32 to reflect all changes to a microptyhon puglic repository</p>
+    <img src="images/logo.png" alt="Logo" width="150" height="150">
+    <h1 align="center">Micropython OTA Updates</h1>
+  <h3 align="center">Keep your remote ESP32 devices in sync with a github repo.</h3>
+  <p align="center"> Over The Air, with one command: ugit.pull_all_files()</p>
 </div>
 
 
@@ -15,9 +16,9 @@ ugit functions:
 * Files Folders and file Deletions are updated to the board
 * Specify which repository, ingore files, and user inside of ugit_config.py
 
-With ugit you can clone an entire micropython repository onto the board.
+With ugit you can update a micropython board with a complete micropython library from github.
 
-Download `ugit_config.py` and 'ugit.py' to get started.
+Download `ugit_config.py` and `ugit.py` to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -85,32 +86,3 @@ Github uses main instead of master for URL api conncetion to repository tree. Se
 ## Repository urepl is used to connect to the internet, it is another library i'm working on for UDP ascyncronus REPL. Check it out on github to learn more.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-
-
-
-
-
-<h1> ugit </h1>
-
-
-# Micropython OTA updates
-load ugit.py and ugit_config.py into your ESP32 or any micropython internet enabled device
-Change the user and repository variable to your github project
-and 
-
-# Will pull all files from github including directories and subfolders
-# it will delete any files not in github repository if not added to ignore_files array in ugit_config.py
-
-
-use the ugit_config.py file to specify files you want to ignore.
-ugit will also delete files that are not in the github if not put in the ignore_files!
-
-# USAGE:
-Change user and repository variable to your github information on ugit_config.py
-
-add files to ignore_files in ugit_config.py to ignore internal files from being overridden
-
-

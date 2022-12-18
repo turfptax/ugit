@@ -4,6 +4,8 @@
 # Check out https://openmuscle.org for more info
 #
 # Pulls files and folders from open github repository
+# Make sure to modify ugit_config.py
+#    put items in ignore_files that you don't want deleted/modified
 
 import os
 import urequests
