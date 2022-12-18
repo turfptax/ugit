@@ -1,8 +1,8 @@
 <br />
 <div align="center">
     <img src="images/logo.png" alt="Logo" width="150" height="150">
-  <h3 align="center">ugit OTA github clone to micropython board</h3>
-  <p align="center">Updates the esp32 to reflect all changes to a microptyhon public repository</p>
+  <h3 align="center">Keep your remote ESP32 devices in sync with a github repo.</h3>
+  <p align="center"> Over The Air, with one command: ugit.pull_all_files()</p>
 </div>
 
 
@@ -101,14 +101,14 @@ load ugit.py and ugit_config.py into your ESP32 or any micropython internet enab
 Change the user and repository variable to your github project
 and 
 
-# Will pull all files from github including directories and subfolders
-# it will delete any files not in github repository if not added to ignore_files array in ugit_config.py
+### Will pull all files from github including directories and subfolders
+### it will delete any files not in github repository if not added to ignore_files array in ugit_config.py
 
 
 use the ugit_config.py file to specify files you want to ignore.
 ugit will also delete files that are not in the github if not put in the ignore_files!
 
-# USAGE:
+## USAGE:
 Change user and repository variable to your github information on ugit_config.py
 
 add files to ignore_files in ugit_config.py to ignore internal files from being overridden
