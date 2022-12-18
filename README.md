@@ -1,8 +1,8 @@
 <br />
 <div align="center">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="150" height="150">
   <h3 align="center">ugit OTA github clone to micropython board</h3>
-  <p align="center">Updates the esp32 to reflect all changes to a microptyhon puglic repository</p>
+  <p align="center">Updates the esp32 to reflect all changes to a microptyhon public repository</p>
 </div>
 
 
