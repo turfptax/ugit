@@ -3,6 +3,7 @@
     <img src="images/logo.png" alt="Logo" width="150" height="150">
     <h1 align="center">Micropython OTA Updates</h1>
   <h3 align="center">Keep your remote ESP32 devices in sync with a github repo.</h3>
+  <h2 align="center">pulls entire github repository onto a micropython board</h2>
   <p align="center"> Over The Air, with one command: ugit.pull_all()</p>
 </div>
 
