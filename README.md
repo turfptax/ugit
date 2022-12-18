@@ -1,17 +1,55 @@
-# ugit
+<br />
+<div align="center">
+    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <h3 align="center">ugit OTA github clone to micropython board</h3>
+  <p align="center">Updates the esp32 to reflect all changes to a microptyhon puglic repository</p>
+</div>
 
-# Micropython OTA Update Module
-# Pulls github code from any public repository
 
-# Micropython OTA updates
-load ugit.py and ugit_config.py into your ESP32 or any micropython internet enabled device
-Change the user and repository variable to your github project
-and this module will grab all of the files from the main branch and save them on your board.
+## About ugit
 
-# USAGE:
-Change user and repository variable to your github information on ugit_config.py
+THis is meant to clone an entire micropython repository to an internet enable micropython microcontroller
 
-add files to ignore_files in ugit_config.py to ignore internal files from being overridden
+ugit functions:
+* ugit will update the internal file structure of an ESP32 with a github repository
+* Files Folders and file Deletions are updated to the board
+* Specify which repository, ingore files, and user inside of ugit_config.py
+
+With ugit you can clone an entire micropython repository onto the board.
+
+Download `ugit_config.py` and 'ugit.py' to get started.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+boot.py
+
+import ugit
+
+ugit.pull_all_files()
+
+
+### Prerequisites
+
+You will need to either use urepl and urepl_config to connect to internet or use your own method.
+
+### Installation
+
+_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+
+1. Copy ugit.py and ugit_config.py onto your micropython board
+2. modify ugit_config with your user and repository
+3. connect your board to internet or use urepl.py
+4. run the ugit.pull_all_files()
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 code:
 
@@ -21,7 +59,7 @@ import ugit
 
 ugit.pull_all_files()
 
-# TESTING:
+### TESTING:
 
 import ugit
 
@@ -44,4 +82,35 @@ Github uses main instead of master for URL api conncetion to repository tree. Se
  
   raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
-# Repository urepl is used to connect to the internet, it is another library i'm working on for UDP ascyncronus REPL. Check it out on github to learn more.
+## Repository urepl is used to connect to the internet, it is another library i'm working on for UDP ascyncronus REPL. Check it out on github to learn more.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+
+
+
+
+<h1> ugit </h1>
+
+
+# Micropython OTA updates
+load ugit.py and ugit_config.py into your ESP32 or any micropython internet enabled device
+Change the user and repository variable to your github project
+and 
+
+# Will pull all files from github including directories and subfolders
+# it will delete any files not in github repository if not added to ignore_files array in ugit_config.py
+
+
+use the ugit_config.py file to specify files you want to ignore.
+ugit will also delete files that are not in the github if not put in the ignore_files!
+
+# USAGE:
+Change user and repository variable to your github information on ugit_config.py
+
+add files to ignore_files in ugit_config.py to ignore internal files from being overridden
+
+
