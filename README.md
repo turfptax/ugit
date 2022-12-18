@@ -18,7 +18,7 @@ ugit functions:
 
 With ugit you can update a micropython board with a complete micropython library from github.
 
-Download `ugit_config.py` and `ugit.py` to get started.
+Download `ugit.py` to your ESP32 micropython board to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -30,21 +30,16 @@ boot.py
 
 import ugit
 
-ugit.pull_all_files()
+ugit.pull_all()
 
-
-### Prerequisites
-
-You will need to either use urepl and urepl_config to connect to internet or use your own method.
 
 ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Copy ugit.py and ugit_config.py onto your micropython board
-2. modify ugit_config with your user and repository
-3. connect your board to internet or use urepl.py
-4. run the ugit.pull_all_files()
+1. Copy ugit.py onto your micropython board
+2. modify ugit_config with the user,repository,ssid, and password
+4. run the ugit.pull_all()
 
 
 <!-- USAGE EXAMPLES -->
@@ -56,9 +51,7 @@ code:
 
 import ugit
 
-!connect to network somehow
-
-ugit.pull_all_files()
+ugit.pull_all()
 
 ### TESTING:
 
@@ -69,6 +62,7 @@ ugit.pull(local_file_path,raw_file_url) pulls single raw files
 ugit.pull_git_tree() pulls the github file tree from the repository
 ugit.parse_git_tree() parses the github tree file to stdout
 ugit.is_directory() checks if file path is a directory (folder).
+ugit.wificonnect(ssid=ssid,password=password)
 
 # Things to note for developers:
 Github requires a urequests header otherwise it will give you a 403 error.
