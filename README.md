@@ -16,7 +16,7 @@ ugit functions:
 * Files Folders and file Deletions are updated to the board
 * Specify which repository, ingore files, and user inside of ugit_config.py
 
-With ugit you can clone an entire micropython repository onto the board.
+With ugit you can update a micropython board with a complete micropython library from github.
 
 Download `ugit_config.py` and `ugit.py` to get started.
 
