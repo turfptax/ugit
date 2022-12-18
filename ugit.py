@@ -4,6 +4,8 @@
 # Check out https://openmuscle.org for more info
 #
 # Pulls files and folders from open github repository
+# Make sure to modify ugit_config.py
+#    put items in ignore_files that you don't want deleted/modified
 
 
 import os
@@ -75,6 +77,9 @@ def pull_all_files(tree=call_trees_url,raw = raw,ignore = ignore):
   # delete files not in Github tree
   if len(internal_tree) > 0:
       print(internal_tree, ' leftover!')
+      for i in internal_tree:
+          os.remove(i)
+          log.append(i + ' removed from int mem')
   logfile = open('ugit_log.py','w')
   logfile.write(str(log))
   logfile.close()
@@ -119,6 +124,11 @@ def get_hash(file):
   sha1obj = hashlib.sha1(r_file)
   hash = sha1obj.digest()
   return(hash.hex())
+
+def get_data_hash(data):
+    sha1obj = hashlib.sha1(data)
+    hash = sha1obj.digest()
+    return(hash.hex())
   
 def is_directory(file):
   directory = False
