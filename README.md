@@ -1,4 +1,4 @@
-# ugit
+<h1> ugit </h1>
 
 # Micropython OTA Update Module
 # Pulls github code from any public repository
@@ -8,7 +8,9 @@ load ugit.py and ugit_config.py into your ESP32 or any micropython internet enab
 Change the user and repository variable to your github project
 and 
 
-# this module will grab all of the files and directories from the main branch and save them on your board. 
+# Will pull all files from github including directories and subfolders
+# it will delete any files not in github repository if not added to ignore_files array in ugit_config.py
+
 
 use the ugit_config.py file to specify files you want to ignore.
 ugit will also delete files that are not in the github if not put in the ignore_files!
