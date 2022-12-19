@@ -38,7 +38,7 @@ ugit.pull_all()
 ```
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
+Simply put: copy ugit.py onto the micropython board.
 
 1. Copy ugit.py onto your micropython board
 2. modify ugit_config with the user,repository,ssid, and password
@@ -64,9 +64,11 @@ ugit.pull_all()
 #boot.py
     
 import ugit
+
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect('SSID','Password')
+
 ugit.pull_all(isconnected=True)
 ```
 
