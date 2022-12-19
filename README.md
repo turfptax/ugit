@@ -48,7 +48,7 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+You can use ugit without any other code in boot. It will connect to wifi and download filetree from github and copy the raw data to your board.
 
 ```python
 # boot.py
@@ -72,6 +72,9 @@ ugit.pull_all(isconnected=True)
 
 ### TESTING:
 
+We plan to include a roll-back feature in the future where you can roll back to a previous state.
+
+```python
 import ugit
 
 ugit.build_internal_tree() grabs internal file structure
@@ -80,6 +83,7 @@ ugit.pull_git_tree() pulls the github file tree from the repository
 ugit.parse_git_tree() parses the github tree file to stdout
 ugit.is_directory() checks if file path is a directory (folder).
 ugit.wificonnect(ssid=ssid,password=password)
+```
 
 # Things to note for developers:
 Github requires a urequests header otherwise it will give you a 403 error.
