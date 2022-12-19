@@ -19,6 +19,8 @@ ugit functions:
 * Files Folders and file Deletions are updated to the board
 * Specify which repository, ingore files, and user inside of ugit.py
 
+<img src="images/logo.png" alt="Logo" width="600" height="600">
+
 With ugit you can update a micropython board with a complete micropython library from github.
 
 Download `ugit.py` to your ESP32 micropython board to get started.
