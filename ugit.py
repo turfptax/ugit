@@ -4,8 +4,6 @@
 # Check out https://openmuscle.org for more info
 #
 # Pulls files and folders from open github repository
-# Make sure to modify ugit_config.py
-#    put items in ignore_files that you don't want deleted/modified
 
 import os
 import urequests
@@ -55,7 +53,9 @@ def pull(f_path,raw_url):
     except:
       print('tried to close new_file to save memory durring raw file decode')
   
-def pull_all_files(tree=call_trees_url,raw = raw,ignore = ignore):
+def pull_all(tree=call_trees_url,raw = raw,ignore = ignore,isconnected=False):
+  if not isconnected:
+      wlan = wificonnect() 
   os.chdir('/')
   tree = pull_git_tree()
   internal_tree = build_internal_tree()
