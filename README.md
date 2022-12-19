@@ -29,12 +29,12 @@ Download `ugit.py` to your ESP32 micropython board to get started.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-boot.py
-<code>
-import ugit
+<code>#boot.py</code>
 
-ugit.pull_all()
-</code>
+<code>import ugit</code>
+
+<code>ugit.pull_all()</code>
+
 ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
@@ -49,24 +49,24 @@ _Below is an example of how you can instruct your audience on installing and set
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-<code>
-# boot.py</br>
-import ugit</br>
 
-ugit.pull_all()</br>
-</code>
+<code># boot.py</code>
+<code>import ugit</code>
+
+<code>ugit.pull_all()</code>
+
 
 ### If you want to use your own method of connecting to wifi you can add the isconnected=true parameter to ugit.pull_all()
 
-<code>
-#boot.py</br>
+
+<code>#boot.py</code>
     
-import ugit</br>
-wlan = network.WLAN(network.STA_IF)</br>
-wlan.active(True)</br>
-wlan.connect('SSID','Password')</br>
-ugit.pull_all(isconnected=True)</br>
-</code>
+<code>import ugit</code>
+<code>wlan = network.WLAN(network.STA_IF)</code>
+<code>wlan.active(True)</code>
+<code>wlan.connect('SSID','Password')</code>
+<code>ugit.pull_all(isconnected=True)</code>
+
 
 ### TESTING:
 
