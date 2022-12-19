@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-    <img src="images/logo.png" alt="Logo" width="150" height="150">
+    <img src="images/logo.png" alt="Logo" width="300" height="300">
     <h1 align="center">Micropython OTA Updates</h1>
   <h3 align="center">Keep your remote ESP32 devices in sync with a github repo.</h3>
   <h2 align="center">Pulls entire github repository onto a micropython board</h2>
@@ -18,6 +18,8 @@ ugit functions:
 * ugit will update the internal file structure of an ESP32 with a github repository
 * Files Folders and file Deletions are updated to the board
 * Specify which repository, ingore files, and user inside of ugit.py
+
+<img src="images/ugit_screenshot.png" alt="Logo" width="600" height="600">
 
 With ugit you can update a micropython board with a complete micropython library from github.
 
