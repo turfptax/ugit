@@ -50,22 +50,22 @@ _Below is an example of how you can instruct your audience on installing and set
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 <code>
-# boot.py
-import ugit
+# boot.py</br>
+import ugit</br>
 
-ugit.pull_all()
+ugit.pull_all()</br>
 </code>
 
 ### If you want to use your own method of connecting to wifi you can add the isconnected=true parameter to ugit.pull_all()
 
 <code>
-#boot.py
+#boot.py</br>
     
-import ugit
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
-wlan.connect('SSID','Password')
-ugit.pull_all(isconnected=True)
+import ugit</br>
+wlan = network.WLAN(network.STA_IF)</br>
+wlan.active(True)</br>
+wlan.connect('SSID','Password')</br>
+ugit.pull_all(isconnected=True)</br>
 </code>
 
 ### TESTING:
