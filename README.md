@@ -10,12 +10,14 @@
 
 ## About ugit
 
-THis is meant to clone an entire micropython repository to an internet enable micropython microcontroller
+This is meant to clone an entire micropython repository to an internet enable micropython microcontroller. You can use it to periodically update the entire ESP32 micropython file structure to match an open github repository.
+
+If there are files that you want to be left intact on the ESP32 regardless of the changes done to the github repository. Just add the file name in ignore_files array. Located on line 27 of ugit.py.
 
 ugit functions:
 * ugit will update the internal file structure of an ESP32 with a github repository
 * Files Folders and file Deletions are updated to the board
-* Specify which repository, ingore files, and user inside of ugit_config.py
+* Specify which repository, ingore files, and user inside of ugit.py
 
 With ugit you can update a micropython board with a complete micropython library from github.
 
@@ -53,6 +55,14 @@ code:
 import ugit
 
 ugit.pull_all()
+
+### If you want to use your own method of connecting to wifi you can add the isconnected=true parameter to ugit.pull_all()
+
+<code> # wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect('SSID','Password')
+
+ugit.pull_all(isconnected=True)</code>
 
 ### TESTING:
 
