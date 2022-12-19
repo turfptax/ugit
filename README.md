@@ -79,12 +79,12 @@ We plan to include a roll-back feature in the future where you can roll back to 
 ```python
 import ugit
 
-ugit.build_internal_tree() grabs internal file structure
-ugit.pull(local_file_path,raw_file_url) pulls single raw files
-ugit.pull_git_tree() pulls the github file tree from the repository
-ugit.parse_git_tree() parses the github tree file to stdout
-ugit.is_directory() checks if file path is a directory (folder).
-ugit.wificonnect(ssid=ssid,password=password)
+ugit.build_internal_tree() #grabs internal file structure
+ugit.pull(local_file_path,raw_file_url) #pulls single raw files
+ugit.pull_git_tree() #pulls the github file tree from the repository
+ugit.parse_git_tree() #parses the github tree file to stdout
+ugit.is_directory() #checks if file path is a directory (folder).
+ugit.wificonnect(ssid=ssid,password=password) #connects to wifi
 ```
 
 # Things to note for developers:
