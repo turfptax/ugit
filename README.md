@@ -104,7 +104,7 @@ Github uses main instead of master for URL api conncetion to repository tree. Se
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<img src="images/ugit_logo.png" alt="Logo" width="250" height="100">
+<img src="images/ugit-logo.png" alt="Logo" width="250" height="100">
 
 ## Roadmap
 
