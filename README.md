@@ -29,12 +29,13 @@ Download `ugit.py` to your ESP32 micropython board to get started.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-<code>#boot.py</code>
+```python
+#boot.py
 
-<code>import ugit</code>
+import ugit
 
-<code>ugit.pull_all()</code>
-
+ugit.pull_all()
+```
 ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
