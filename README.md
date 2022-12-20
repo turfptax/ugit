@@ -1,6 +1,6 @@
 <br />
 <div align="center">
-    <img src="images/logo.png" alt="Logo" width="300" height="300">
+    <img src="images/ugit_ugit-main-image.png" alt="Logo" width="300" height="300">
     <h1 align="center">Micropython OTA Updates</h1>
   <h3 align="center">Keep your remote ESP32 devices in sync with a github repo.</h3>
   <h2 align="center">Pulls entire github repository onto a micropython board</h2>
@@ -27,7 +27,7 @@ Download `ugit.py` to your ESP32 micropython board to get started.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+<img src="images/ugit_ugit-main-divider.png" alt="Logo"  height="20">
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -46,7 +46,7 @@ Simply put: copy ugit.py onto the micropython board.
 2. modify ugit_config with the user,repository,ssid, and password
 4. run the ugit.pull_all()
 
-
+<img src="images/ugit_ugit-main-divider.png" alt="Logo"  height="20">
 <!-- USAGE EXAMPLES -->
 ## Usage
 
@@ -73,7 +73,7 @@ wlan.connect('SSID','Password')
 
 ugit.pull_all(isconnected=True)
 ```
-
+<img src="images/ugit_ugit-main-divider.png" alt="Logo"  height="20">
 ### TESTING:
 
 We plan to include a roll-back feature in the future where you can roll back to a previous state.
@@ -105,6 +105,7 @@ Github uses main instead of master for URL api conncetion to repository tree. Se
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <img src="images/ugit-logo.png" alt="Logo" width="250" height="100">
+<img src="images/ugit_ugit-main-divider.png" alt="Logo"  height="20">
 
 ## Roadmap
 
