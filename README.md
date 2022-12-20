@@ -103,3 +103,19 @@ Github uses main instead of master for URL api conncetion to repository tree. Se
   raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<img src="images/ugit-logo.png" alt="Logo" width="250" height="100">
+
+## Roadmap
+
+See the [open issues](https://github.com/turfptax/ugit/issues) for a list of proposed features (and known issues).
+
+As we test and update the code to work in a variety of scenarious we wish to have the following features implemented as soon as possible.
+
+- Rollback function
+- ugit.py update function
+- SHA1 internal hash storage
+- Simplified Logging
+
+
+
