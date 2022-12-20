@@ -206,3 +206,9 @@ def remove_item(item,tree):
         if item not in i:
             culled.append(i)
     return(culled)
+
+def update():
+    print('updates ugit.py to newest version')
+    raw_url = 'https://raw.githubusercontent.com/turfptax/ugit/master/'
+    pull('ugit.py',raw_url)
+    
