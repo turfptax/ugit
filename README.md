@@ -114,8 +114,8 @@ See the [open issues](https://github.com/turfptax/ugit/issues) for a list of pro
 As we test and update the code to work in a variety of scenarious we wish to have the following features implemented as soon as possible.
 
 - Rollback function
-- ugit.py update function
-- SHA1 internal hash storage
+- SHA1 internal hash storage - Currently ugit pulls all files
+- ugit.py update function - updates the ugit.py code from this repository (currently in dev branch)
 - Simplified Logging
 
 
