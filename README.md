@@ -29,6 +29,10 @@ Download `ugit.py` to your ESP32 micropython board to get started.
 
 <img src="images/ugit_ugit-divider.png" alt="Logo"  height="20">
 <!-- GETTING STARTED -->
+
+# make sure to back up your code before trying ugit
+## when you run ugit.pull_all() it will download all the files in the repository and delete any files on the board that are not in the variable ignore_files array.
+
 ## Getting Started
 
 ```python
