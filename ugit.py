@@ -210,5 +210,5 @@ def remove_item(item,tree):
 def update():
     print('updates ugit.py to newest version')
     raw_url = 'https://raw.githubusercontent.com/turfptax/ugit/master/'
-    pull('ugit.py',raw_url)
+    pull('ugit.py',raw_url+'ugit.py')
     
