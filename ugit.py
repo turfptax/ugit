@@ -211,4 +211,15 @@ def update():
     print('updates ugit.py to newest version')
     raw_url = 'https://raw.githubusercontent.com/turfptax/ugit/master/'
     pull('ugit.py',raw_url+'ugit.py')
-    
+
+def backup():
+    int_tree = build_internal_tree()
+    backup_text = "ugit Backup Version 1.0\n\n"
+    for i in int_tree:
+        data = open(i[0],'r')
+        backup_text += f'FN:SHA1{i[0]},{i[1]}\n'
+        backup_text += '---'+data.read()+'---\n'
+        data.close()
+    backup = open('ugit.backup','w')
+    backup.write(backup_text)
+    backup.close()
