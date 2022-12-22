@@ -77,6 +77,23 @@ wlan.connect('SSID','Password')
 
 ugit.pull_all(isconnected=True)
 ```
+
+### You can also use the built in function wificonnect()
+```python
+import ugit
+
+ugit.wificonnect('SSID','PASSWORD')
+
+# Pull single file
+ugit.pull('file_name.ext','Raw_github_url')
+
+# backup board's files
+ugit.backup()
+
+# Pull all files
+ugit.pull_all()
+```
+
 <img src="images/ugit_ugit-divider.png" alt="Logo"  height="20">
 ### TESTING:
 
