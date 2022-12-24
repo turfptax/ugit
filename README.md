@@ -92,9 +92,6 @@ ugit.backup() # saves to ugit.backup file
 # Pull single file
 ugit.pull('file_name.ext','Raw_github_url')
 
-# backup board's files
-ugit.backup()
-
 # Pull all files
 ugit.pull_all()
 ```
