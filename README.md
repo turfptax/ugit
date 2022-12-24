@@ -40,6 +40,8 @@ Download `ugit.py` to your ESP32 micropython board to get started.
 
 import ugit
 
+ugit.backup() # good idea to backup your files!
+
 ugit.pull_all()
 ```
 ### Installation
