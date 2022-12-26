@@ -22,9 +22,10 @@ ssid = "OpenMuscle"
 password = "3141592653"
 
 # CHANGE TO YOUR REPOSITORY INFO
-# Repository must be public
+# Repository must be public if no personal access token is supplied
 user = 'turfptax'
 repository = 'ugit_test'
+token = ''
 
 # Don't remove ugit.py from the ignore_files unless you know what you are doing :D
 # Put the files you don't want deleted or updated here use '/filename.ext'
@@ -41,7 +42,11 @@ raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 def pull(f_path,raw_url):
   print(f'pulling {f_path} from github')
   #files = os.listdir()
-  r = urequests.get(raw_url)
+  headers = {'User-Agent': 'ugit-turfptax'} 
+  # ^^^ Github Requires user-agent header otherwise 403
+  if len(token) > 0:
+      headers['authorization'] = "bearer %s" % token 
+  r = urequests.get(raw_url, headers=headers)
   try:
     new_file = open(f_path, 'w')
     new_file.write(r.content.decode('utf-8'))
@@ -161,8 +166,11 @@ def is_directory(file):
     return directory
     
 def pull_git_tree(tree_url=call_trees_url,raw = raw):
-  r = urequests.get(tree_url,headers={'User-Agent': 'ugit-turfptax'})
+  headers = {'User-Agent': 'ugit-turfptax'} 
   # ^^^ Github Requires user-agent header otherwise 403
+  if len(token) > 0:
+      headers['authorization'] = "bearer %s" % token 
+  r = urequests.get(tree_url,headers=headers)
   tree = json.loads(r.content.decode('utf-8'))
   return(tree)
   
