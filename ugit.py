@@ -42,7 +42,11 @@ raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
 def pull(f_path,raw_url):
   print(f'pulling {f_path} from github')
   #files = os.listdir()
-  r = urequests.get(raw_url)
+  headers = {'User-Agent': 'ugit-turfptax'} 
+  # ^^^ Github Requires user-agent header otherwise 403
+  if len(token) > 0:
+      headers['authorization'] = "bearer %s" % token 
+  r = urequests.get(raw_url, headers=headers)
   try:
     new_file = open(f_path, 'w')
     new_file.write(r.content.decode('utf-8'))
