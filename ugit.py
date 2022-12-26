@@ -9,6 +9,7 @@ import os
 import urequests
 import json
 import hashlib
+import binascii
 import machine
 import time
 import network
@@ -146,12 +147,12 @@ def get_hash(file):
   r_file = o_file.read()
   sha1obj = hashlib.sha1(r_file)
   hash = sha1obj.digest()
-  return(hash.hex())
+  return(binascii.hexlify(hash))
 
 def get_data_hash(data):
     sha1obj = hashlib.sha1(data)
     hash = sha1obj.digest()
-    return(hash.hex())
+    return(binascii.hexlify(hash))
   
 def is_directory(file):
   directory = False
