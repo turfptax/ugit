@@ -227,8 +227,10 @@ def backup():
     for i in int_tree:
         data = open(i[0],'r')
         backup_text += f'FN:SHA1{i[0]},{i[1]}\n'
-        backup_text += '---'+data.read()+'---\n'
+        if data.read():
+          backup_text += '---'+data.read()+'---\n'
         data.close()
     backup = open('ugit.backup','w')
     backup.write(backup_text)
     backup.close()
+
