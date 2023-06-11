@@ -72,6 +72,7 @@ ugit.pull_all()
 #boot.py
     
 import ugit
+import network
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
