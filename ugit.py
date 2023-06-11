@@ -32,7 +32,7 @@ default_branch = 'main'
 
 # Don't remove ugit.py from the ignore_files unless you know what you are doing :D
 # Put the files you don't want deleted or updated here use '/filename.ext'
-ignore_files = ['/ugit.py']
+ignore_files = ['/ugit.py','/ugit.backup']
 ignore = ignore_files
 ### -----------END OF USER VARIABLES ----------####
 
