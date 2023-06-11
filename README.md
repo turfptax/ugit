@@ -96,40 +96,6 @@ ugit.pull('file_name.ext','Raw_github_url')
 ugit.pull_all()
 ```
 
-<img src="images/ugit_ugit-divider.png" alt="Logo"  height="20">
-### TESTING:
-
-We plan to include a roll-back feature in the future where you can roll back to a previous state.
-
-```python
-import ugit
-
-ugit.build_internal_tree() #grabs internal file structure
-ugit.pull(local_file_path,raw_file_url) #pulls single raw files
-ugit.pull_git_tree() #pulls the github file tree from the repository
-ugit.parse_git_tree() #parses the github tree file to stdout
-ugit.is_directory() #checks if file path is a directory (folder).
-ugit.wificonnect(ssid=ssid,password=password) #connects to wifi
-```
-
-# Things to note for developers:
-Github requires a urequests header otherwise it will give you a 403 error.
-
-Github uses main instead of master for URL api conncetion to repository tree. See source code in ugit.py for more informaiton.
-
-  NOTE if you are pulling from a non-python repository you made need to change call_trees_url to /master? instead of /main? 
-  
-  giturl = 'https://github.com/{user}/{repository}'
-  
-  call_trees_url = f'https://api.github.com/repos/{user}/{repository}/git/trees/main?recursive=1'
- 
-  raw = f'https://raw.githubusercontent.com/{user}/{repository}/master/'
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<img src="images/ugit-logo.png" alt="Logo" width="250" height="100">
-<img src="images/ugit_ugit-divider.png" alt="Logo"  height="20">
-
 ## Roadmap
 
 See the [open issues](https://github.com/turfptax/ugit/issues) for a list of proposed features (and known issues).
