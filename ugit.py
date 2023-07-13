@@ -16,25 +16,16 @@ import network
 
 global internal_tree
 
-#### -------------User Variables----------------####
-#### 
-# Default Network to connect using wificonnect()
-ssid = "OpenMuscle"
-password = "3141592653"
+#### ---User Variables in ugit_config.py---####
+import ugit_config
 
-# CHANGE TO YOUR REPOSITORY INFO
-# Repository must be public if no personal access token is supplied
-user = 'turfptax'
-repository = 'ugit_test'
-token = ''
-# Change this variable to 'master' or any other name matching your default branch
-default_branch = 'main'
-
-# Don't remove ugit.py from the ignore_files unless you know what you are doing :D
-# Put the files you don't want deleted or updated here use '/filename.ext'
-ignore_files = ['/ugit.py','/ugit.backup']
-ignore = ignore_files
-### -----------END OF USER VARIABLES ----------####
+ssid = ugit_config.ssid
+password = ugit_config.password
+user = ugit_config.user
+repository = ugit_config.repository
+token = ugit_config.token
+default_branch = ugit_config.default_branch
+ignore = ugit_config.ignore_files
 
 # Static URLS
 # GitHub uses 'main' instead of master for python repository trees
@@ -68,7 +59,6 @@ def pull_all(tree=call_trees_url,raw = raw,ignore = ignore,isconnected=False):
   tree = pull_git_tree()
   internal_tree = build_internal_tree()
   internal_tree = remove_ignore(internal_tree)
-  print(' ignore removed ----------------------')
   print(internal_tree)
   log = []
   # download and save all files
@@ -193,6 +183,14 @@ def parse_git_tree():
   print('dirs:',dirs)
   print('files:',files)
    
+def write_git_tree_file():
+    trees = pull_git_tree()
+    tree_file = open('ugit.tree','w')
+    tree_file.write(str(trees))
+    tree_file.close()
+
+
+
    
 def check_ignore(tree=call_trees_url,raw = raw,ignore = ignore):
   os.chdir('/')
