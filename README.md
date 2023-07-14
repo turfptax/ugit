@@ -42,7 +42,11 @@ import ugit
 
 ugit.backup() # good idea to backup your files!
 
-ugit.pull_all()
+
+if ugit.repo_has_updates():
+    ugit.pull_all()
+else:
+    print('no new updates available')
 ```
 ### Installation
 
