@@ -90,10 +90,24 @@ def pull_all(tree=call_trees_url,raw = raw,ignore = ignore,isconnected=False):
   logfile = open('ugit_log.py','w')
   logfile.write(str(log))
   logfile.close()
-  time.sleep(10)
+  write_git_tree_file()
   print('resetting machine in 10: machine.reset()')
+  time.sleep(10)
   machine.reset()
   #return check instead return with global
+  
+def repo_has_updates():
+    print('Returns True if an update from repo is available')
+    if not 'ugit.tree' in [file[0] for file in os.ilistdir()]:
+        github_tree = pull_git_tree()
+        with open('ugit.tree','r') as f:
+            saved_tree = f.read()
+        if str(github_tree) == saved_tree:
+            return False
+        else:
+            return True
+    else:
+        return True
 
 def wificonnect(ssid=ssid,password=password):
     print('Use: like ugit.wificonnect(SSID,Password)')
@@ -139,12 +153,12 @@ def add_to_tree(dir_item):
 
 
 def get_hash(file):
-  print(file)
-  o_file = open(file)
-  r_file = o_file.read()
-  sha1obj = hashlib.sha1(r_file)
-  hash = sha1obj.digest()
-  return(binascii.hexlify(hash))
+    print(file)
+    o_file = open(file)
+    r_file = o_file.read()
+    sha1obj = hashlib.sha1(r_file)
+    hash = sha1obj.digest()
+    return(binascii.hexlify(hash))
 
 def get_data_hash(data):
     sha1obj = hashlib.sha1(data)
@@ -189,9 +203,6 @@ def write_git_tree_file():
     tree_file.write(str(trees))
     tree_file.close()
 
-
-
-   
 def check_ignore(tree=call_trees_url,raw = raw,ignore = ignore):
   os.chdir('/')
   tree = pull_git_tree()
