@@ -28,12 +28,14 @@ Download `ugit.py` to your ESP32 micropython board to get started.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <img src="images/ugit_ugit-divider.png" alt="Logo"  height="20">
-<!-- GETTING STARTED -->
 
-# make sure to back up your code before trying ugit
-## when you run ugit.pull_all() it will download all the files in the repository and delete any files on the board that are not in the variable ignore_files array.
+
+### Make sure to back up your code before trying ugit
+#### When you run `ugit.pull_all()` it will download all the files in the repository and **delete any files on the board that are not in the variable `ignore_files` array**.
 
 ## Getting Started
+Begin with adding your configuration to `contants.py` and `ugit.py` files. 
+Thereafter, you should edit the `boot.py` file to run `ugit.pull_all()` on boot. There are a few ways to do this, make sure to read the [Usage](#usage) section.
 
 ```python
 #boot.py
@@ -46,14 +48,15 @@ ugit.pull_all()
 ```
 ### Installation
 
-Simply put: copy ugit.py onto the micropython board.
+Simply put: copy `ugit.py` and your version of `constants.py` onto the micropython board.
 
-1. Copy ugit.py onto your micropython board
-2. modify ugit_config with the user,repository,ssid, and password
-4. run the ugit.pull_all()
+1. Copy `ugit.py` and `constants.py` with your edits onto your micropython board
+2. Modify `ugit_config` with the GitHub user and repository you want to pull from. Token if needed etc
+3. Run the `ugit.pull_all()` in `boot.py`
 
 <img src="images/ugit_ugit-divider.png" alt="Logo"  height="20">
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 You can use ugit without any other code in boot. It will connect to wifi and download filetree from github and copy the raw data to your board.
@@ -73,10 +76,11 @@ ugit.pull_all()
     
 import ugit
 import network
+import constants # if you're using constants.py
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect('SSID','Password')
+wlan.connect(constants.wifi_ssid, constants.wifi_password)
 
 ugit.pull_all(isconnected=True)
 ```
@@ -85,7 +89,7 @@ ugit.pull_all(isconnected=True)
 ```python
 import ugit
 
-wlan = ugit.wificonnect('SSID','PASSWORD')
+wlan = ugit.wificonnect()
 
 # backup internal files
 ugit.backup() # saves to ugit.backup file

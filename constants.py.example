@@ -1,0 +1,10 @@
+# Wifi
+wifi_ssid = ''
+wifi_password = ''
+
+# Github
+ugit_repo = 'jackbillstrom/ugit'
+github_user = ''
+github_repo = ''
+github_token = ''
+github_branch = 'main'
