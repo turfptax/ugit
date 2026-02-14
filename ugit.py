@@ -54,15 +54,19 @@ def _git_blob_hash(data):
 
 def _local_file_hash(filepath):
     """Get the GitHub-compatible blob SHA1 of a local file."""
-    f = open(filepath, 'rb')
-    data = f.read()
-    f.close()
+    try:
+        f = open(filepath, 'rb')
+        data = f.read()
+        f.close()
+    except:
+        data = b''
     return _git_blob_hash(data)
 
 
 def _is_directory(path):
     try:
-        return os.stat(path)[8] == 0
+        # stat[0] has mode bits; 0x4000 is the directory flag
+        return os.stat(path)[0] & 0x4000 != 0
     except:
         return False
 
