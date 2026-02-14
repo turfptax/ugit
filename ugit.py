@@ -223,12 +223,17 @@ def create_config(ssid='', password='', user='', repository='',
         'token': token,
         'ignore': ignore,
     }
+    # MicroPython devices have no secure keychain; credentials must be stored
+    # on the local filesystem. config.json is auto-protected from sync and
+    # should never be committed to the GitHub repository.
     f = open(_CONFIG_PATH, 'w')
     f.write(json.dumps(cfg))
     f.close()
+    # Print confirmation (field names only, never values)
+    field_names = [k for k in cfg if cfg[k]]
     print('Config saved to %s' % _CONFIG_PATH)
-    print('Keys stored: %s' % ', '.join(k for k in cfg if cfg[k]))
-    print('WARNING: Never commit this file to your GitHub repository.')
+    print('Fields stored: %s' % ', '.join(field_names))
+    print('WARNING: config.json contains credentials. Never commit it to GitHub.')
 
 
 def show_config():

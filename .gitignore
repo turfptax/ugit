@@ -1,0 +1,10 @@
+# Device credentials — never commit this file
+config.json
+
+# Backup files created by ugit
+ugit.backup
+ugit_log.txt
+
+# Python
+__pycache__/
+*.pyc
