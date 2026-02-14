@@ -1,6 +1,6 @@
 {
     "urls": [
-        ["ugit.py", "github:turfptax/ugit/ugit.py"]
+        ["ugit.py", "https://raw.githubusercontent.com/turfptax/ugit/dev/weekend-features/ugit.py"]
     ],
     "version": "2.0.0"
 }
