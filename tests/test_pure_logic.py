@@ -214,6 +214,10 @@ class TestIsUsbCdc:
         set_board_machine('ESP32C6 module with ESP32C6')
         assert ugit._is_usb_cdc() is True
 
+    def test_esp32h2_detected(self, set_board_machine):
+        set_board_machine('ESP32H2 module with ESP32H2')
+        assert ugit._is_usb_cdc() is True
+
     def test_regular_esp32_not_detected(self, set_board_machine):
         set_board_machine('ESP32 module with ESP32')
         assert ugit._is_usb_cdc() is False

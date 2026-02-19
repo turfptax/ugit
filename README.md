@@ -17,7 +17,13 @@
 
 ugit syncs the entire file structure of an ESP32 (or any MicroPython board with WiFi) with a GitHub repository. Use it for OTA updates of your IoT devices in the field.
 
-**What's new in v2.0:**
+**What's new in v2.1:**
+* **Directory-level ignore** — `/lib` in the ignore list protects all files under it (mip packages safe)
+* **USB-CDC board safety** — auto-detects ESP32-S2/S3/C3/C6/H2 and skips `machine.reset()` to prevent bricking
+* **Automated test suite** — 65 pytest tests with GitHub Actions CI on every push/PR
+* **Branch-aware self-update** — `ugit.update(branch='dev')` to test development branches
+
+**Also in v2.0:**
 * **Hash-based updates** — only downloads files that actually changed (GitHub-compatible SHA1)
 * **Secure config** — WiFi passwords and tokens stored in `/config.json` on the device, never in your code
 * **Safe updates** — `safe_pull_all()` checks storage space and creates a backup before updating
@@ -195,11 +201,11 @@ ugit.update()
 | `safe_pull_all(...)` | Like pull_all but checks storage and creates backup first |
 | `check_for_updates(...)` | Preview changes without downloading |
 | `wificonnect(ssid, password)` | Connect to WiFi (reads from config if no args) |
-| `pull(filepath, raw_url)` | Download a single file |
-| `backup()` | Backup all device files to /ugit.backup |
-| `restore()` | Restore files from backup |
+| `pull(filepath, raw_url, token)` | Download a single file from GitHub |
+| `backup(ignore)` | Backup all device files to /ugit.backup |
+| `restore(ignore)` | Restore files from backup |
 | `storage_info()` | Show device storage usage |
-| `update()` | Update ugit.py itself from this repository |
+| `update(branch, token)` | Update ugit.py itself (supports dev branches) |
 
 All functions read from `/config.json` when arguments are omitted.
 
@@ -236,6 +242,21 @@ machine.reset()
 - `config.json` is automatically protected — ugit will never delete or overwrite it during sync.
 - If using a private repository, create a [GitHub personal access token](https://github.com/settings/tokens) with `repo` scope and pass it as `token`.
 - `show_config()` masks passwords and tokens so they aren't displayed in full.
+
+<img src="images/ugit_ugit-divider.png" alt="divider"  height="20">
+
+## Testing
+
+ugit includes a pytest suite that runs on a regular PC — no hardware needed. MicroPython-specific modules (`urequests`, `machine`, `network`) are mocked automatically.
+
+```bash
+pip install pytest
+python -m pytest tests/ -v
+```
+
+Tests cover: ignore pattern matching, SHA1 hashing, config round-trips, backup/restore parsing, pull_all sync/delete logic, USB-CDC board detection, and the `/lib` directory protection that prevents the bricking bug.
+
+Tests are also run automatically via GitHub Actions on every push and pull request.
 
 <img src="images/ugit_ugit-divider.png" alt="divider"  height="20">
 
@@ -277,6 +298,9 @@ See the [open issues](https://github.com/turfptax/ugit/issues) for a list of pro
 - [x] Storage space checking
 - [x] Zero-length file handling
 - [x] Binary file support
+- [x] Directory-level ignore matching
+- [x] USB-CDC board safety (auto-skip reset)
+- [x] Automated test suite (pytest + GitHub Actions CI)
 - [ ] GitLab support
 - [ ] Memory optimization for large repos
 

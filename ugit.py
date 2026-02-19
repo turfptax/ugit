@@ -19,7 +19,7 @@
 # This file is auto-ignored so ugit will never delete or overwrite it.
 # NEVER commit config.json to your GitHub repository.
 
-__version__ = '2.0.0'
+__version__ = '2.1.0'
 
 import os
 import urequests
@@ -118,7 +118,7 @@ def _is_usb_cdc():
     """
     try:
         machine_str = os.uname().machine.upper()
-        for chip in ('ESP32S3', 'ESP32S2', 'ESP32C6', 'ESP32C3'):
+        for chip in ('ESP32S3', 'ESP32S2', 'ESP32C6', 'ESP32C3', 'ESP32H2'):
             if chip in machine_str:
                 return True
     except:
@@ -136,18 +136,6 @@ def _is_ignored(path, ignore):
         if path == e or path.startswith(e + '/'):
             return True
     return False
-
-
-def _local_files_size(ignore=None):
-    """Get total size of all local files (excluding ignored)."""
-    if ignore is None:
-        ignore = []
-    total = 0
-    tree = _build_internal_tree()
-    for path in tree:
-        if not _is_ignored(path, ignore):
-            total += _file_size(path)
-    return total
 
 
 def _repo_download_size(git_tree, local_tree, ignore):
