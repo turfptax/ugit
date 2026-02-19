@@ -140,7 +140,7 @@ ugit.pull_all(isconnected=True)
 
 ### Ignore specific files and directories
 
-Files and directories can be ignored via `create_config()` or passed directly. Adding a directory like `/data` ignores all files under it. ugit always auto-protects `/ugit.py`, `/config.json`, `/ugit.backup`, `/ugit_log.txt`, and `/lib` (mip-installed packages).
+Files and directories can be ignored via `create_config()` or passed directly. Adding a directory like `/data` ignores all files under it. ugit always auto-protects `/ugit.py`, `/config.json`, `/ugit.backup`, `/ugit_log.txt`, `/lib` (mip-installed packages), and `/sd` (mounted SD cards).
 
 ```python
 ugit.create_config(
