@@ -129,9 +129,9 @@ wlan.connect('SSID', 'Password')
 ugit.pull_all(isconnected=True)
 ```
 
-### Ignore specific files
+### Ignore specific files and directories
 
-Files can be ignored via `create_config()` or passed directly. ugit always auto-protects `/ugit.py`, `/config.json`, `/ugit.backup`, and `/ugit_log.txt`.
+Files and directories can be ignored via `create_config()` or passed directly. Adding a directory like `/data` ignores all files under it. ugit always auto-protects `/ugit.py`, `/config.json`, `/ugit.backup`, `/ugit_log.txt`, and `/lib` (mip-installed packages).
 
 ```python
 ugit.create_config(
@@ -139,7 +139,7 @@ ugit.create_config(
     password='MyPass',
     user='turfptax',
     repository='my-project',
-    ignore=['/my_local_data.json', '/calibration.py']
+    ignore=['/my_local_data.json', '/calibration.py', '/data']
 )
 ```
 
