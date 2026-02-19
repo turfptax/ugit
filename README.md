@@ -73,10 +73,12 @@ ugit.create_config(
 # boot.py or main.py — no secrets in this file!
 import ugit
 
-ugit.pull_all()
+ugit.pull_all()  # reset_after defaults to False; reset manually after verifying
 ```
 
-That's it! Your device will connect to WiFi, check GitHub for changes, download only what's new, and reboot.
+That's it! Your device will connect to WiFi, check GitHub for changes, and download only what's new.
+
+> **USB-CDC boards (ESP32-S2, S3, C3, C6):** ugit detects these boards and skips `machine.reset()` automatically. On USB-CDC boards, a reset can make the device inaccessible if your code crashes before USB re-enumerates. Always test with `reset_after=False` first, and reset manually once you've confirmed your code works.
 
 <img src="images/ugit_ugit-divider.png" alt="divider"  height="20">
 
@@ -106,14 +108,15 @@ import ugit
 ugit.safe_pull_all()
 ```
 
-### Update without auto-reset
+### Update with auto-reset (UART-bridge boards only)
 
 ```python
 import ugit
 
+# Only use reset_after=True on boards with a UART bridge (CP2102, CH340).
+# On USB-CDC boards (ESP32-S2/S3/C3/C6), ugit will skip the reset automatically.
 ugit.wificonnect()
-log = ugit.pull_all(isconnected=True, reset_after=False)
-print(log)
+ugit.pull_all(isconnected=True, reset_after=True)
 ```
 
 ### Use your own WiFi connection
@@ -199,6 +202,31 @@ ugit.update()
 | `update()` | Update ugit.py itself from this repository |
 
 All functions read from `/config.json` when arguments are omitted.
+
+<img src="images/ugit_ugit-divider.png" alt="divider"  height="20">
+
+## USB-CDC Board Safety
+
+ESP32-S2, ESP32-S3, ESP32-C3, and ESP32-C6 boards use **native USB** for their serial connection. Unlike boards with a UART bridge chip (CP2102, CH340), these boards lose their serial port entirely during `machine.reset()`. If `boot.py` or `main.py` crashes before USB re-enumerates, the device becomes inaccessible and requires reflashing.
+
+**ugit protects against this automatically:**
+- Detects USB-CDC boards via `os.uname().machine`
+- Skips `machine.reset()` on these boards even if `reset_after=True`
+- Prints a warning asking you to reset manually
+- `reset_after` defaults to `False` on all boards
+
+**Safe pattern for any board:**
+
+```python
+# Update without auto-reset (the default)
+ugit.pull_all(isconnected=True)
+
+# Verify your code works, then reset manually:
+import machine
+machine.reset()
+```
+
+**If your device becomes inaccessible:** Hold the BOOT button while pressing RESET to enter the ROM bootloader, then reflash MicroPython using esptool.
 
 <img src="images/ugit_ugit-divider.png" alt="divider"  height="20">
 
