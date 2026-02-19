@@ -505,8 +505,13 @@ def check_for_updates(user=None, repository=None, branch=None, token=None,
     return {'new': new, 'changed': changed, 'deleted': deleted}
 
 
-def update(token=None):
-    """Update ugit.py itself to the newest version.
+def update(branch=None, token=None):
+    """Update ugit.py itself from this repository.
+
+    Args:
+        branch:  Branch to pull from (default: 'main'). Use this to test
+                 development branches, e.g. ugit.update('fix/my-branch')
+        token:   GitHub token for private repos (reads from config if None)
 
     Detects where ugit was imported from (e.g. /lib/ugit.py vs /ugit.py)
     and updates in-place so mip-installed copies are updated correctly.
@@ -514,14 +519,16 @@ def update(token=None):
     if token is None:
         cfg = _load_config()
         token = cfg.get('token', '')
+    if branch is None:
+        branch = 'main'
     # Update in the same location ugit was imported from
     try:
         dest = __file__
     except:
         dest = '/ugit.py'
-    raw_url = '%s/turfptax/ugit/main/ugit.py' % _GITHUB_RAW
+    raw_url = '%s/turfptax/ugit/%s/ugit.py' % (_GITHUB_RAW, branch)
     pull(dest, raw_url, token)
-    print('ugit updated at %s. Reset device to use new version.' % dest)
+    print('ugit updated at %s from branch %s. Reset device to use new version.' % (dest, branch))
 
 
 def backup(ignore=None):
