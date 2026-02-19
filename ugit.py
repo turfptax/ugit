@@ -506,13 +506,22 @@ def check_for_updates(user=None, repository=None, branch=None, token=None,
 
 
 def update(token=None):
-    """Update ugit.py itself to the newest version."""
+    """Update ugit.py itself to the newest version.
+
+    Detects where ugit was imported from (e.g. /lib/ugit.py vs /ugit.py)
+    and updates in-place so mip-installed copies are updated correctly.
+    """
     if token is None:
         cfg = _load_config()
         token = cfg.get('token', '')
+    # Update in the same location ugit was imported from
+    try:
+        dest = __file__
+    except:
+        dest = '/ugit.py'
     raw_url = '%s/turfptax/ugit/main/ugit.py' % _GITHUB_RAW
-    pull('/ugit.py', raw_url, token)
-    print('ugit updated. Reset device to use new version.')
+    pull(dest, raw_url, token)
+    print('ugit updated at %s. Reset device to use new version.' % dest)
 
 
 def backup(ignore=None):
