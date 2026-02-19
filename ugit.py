@@ -109,6 +109,18 @@ def _file_size(filepath):
         return 0
 
 
+def _is_ignored(path, ignore):
+    """Check if path matches any ignore entry (exact or directory prefix).
+
+    '/lib' in ignore matches '/lib/aioble/core.mpy' but not '/library/foo.py'.
+    """
+    for entry in ignore:
+        e = entry.rstrip('/')
+        if path == e or path.startswith(e + '/'):
+            return True
+    return False
+
+
 def _local_files_size(ignore=None):
     """Get total size of all local files (excluding ignored)."""
     if ignore is None:
@@ -116,7 +128,7 @@ def _local_files_size(ignore=None):
     total = 0
     tree = _build_internal_tree()
     for path in tree:
-        if path not in ignore:
+        if not _is_ignored(path, ignore):
             total += _file_size(path)
     return total
 
@@ -130,7 +142,7 @@ def _repo_download_size(git_tree, local_tree, ignore):
         path = item['path']
         if not path.startswith('/'):
             path = '/' + path
-        if path in ignore:
+        if _is_ignored(path, ignore):
             continue
         git_sha = item.get('sha', '')
         local_sha = local_tree.get(path, '')
@@ -162,7 +174,7 @@ def _ensure_ignore(ignore):
     """Make sure config.json and ugit.py are always in the ignore list."""
     if ignore is None:
         ignore = []
-    protected = ['/ugit.py', _CONFIG_PATH, '/ugit.backup', '/ugit_log.txt']
+    protected = ['/ugit.py', _CONFIG_PATH, '/ugit.backup', '/ugit_log.txt', '/lib']
     for p in protected:
         if p not in ignore:
             ignore.append(p)
@@ -367,7 +379,7 @@ def pull_all(user=None, repository=None, branch=None, token=None,
 
         git_files.add(path)
 
-        if path in ignore:
+        if _is_ignored(path, ignore):
             skipped += 1
             continue
 
@@ -392,7 +404,7 @@ def pull_all(user=None, repository=None, branch=None, token=None,
 
     # delete local files not in the repo (except ignored)
     for local_path in local_tree:
-        if local_path not in git_files and local_path not in ignore:
+        if local_path not in git_files and not _is_ignored(local_path, ignore):
             try:
                 os.remove(local_path)
                 deleted += 1
@@ -454,7 +466,7 @@ def check_for_updates(user=None, repository=None, branch=None, token=None,
         if not path.startswith('/'):
             path = '/' + path
         git_files.add(path)
-        if path in ignore:
+        if _is_ignored(path, ignore):
             continue
         local_sha = local_tree.get(path, '')
         if not local_sha:
@@ -463,7 +475,7 @@ def check_for_updates(user=None, repository=None, branch=None, token=None,
             changed.append(path)
 
     for local_path in local_tree:
-        if local_path not in git_files and local_path not in ignore:
+        if local_path not in git_files and not _is_ignored(local_path, ignore):
             deleted.append(local_path)
 
     return {'new': new, 'changed': changed, 'deleted': deleted}
@@ -489,7 +501,7 @@ def backup(ignore=None):
     backup_size = 0
     file_count = 0
     for path in local_tree:
-        if path not in ignore:
+        if not _is_ignored(path, ignore):
             backup_size += _file_size(path) + len(path) + 80  # metadata per file
             file_count += 1
 
@@ -502,7 +514,7 @@ def backup(ignore=None):
     f = open('/ugit.backup', 'w')
     f.write('ugit backup v2\n')
     for path, sha in local_tree.items():
-        if path in ignore:
+        if _is_ignored(path, ignore):
             continue
         f.write('FILE:%s SHA:%s\n' % (path, sha))
         try:
@@ -558,7 +570,7 @@ def restore(ignore=None):
         if line_stripped.startswith('FILE:'):
             # save previous file if we have one
             if current_path and current_content is not None:
-                if current_path not in ignore:
+                if not _is_ignored(current_path, ignore):
                     _restore_file(current_path, current_content)
                     restored += 1
                 else:
@@ -589,7 +601,7 @@ def restore(ignore=None):
 
     # save last file
     if current_path and current_content is not None:
-        if current_path not in ignore:
+        if not _is_ignored(current_path, ignore):
             _restore_file(current_path, current_content)
             restored += 1
         else:
@@ -659,7 +671,7 @@ def safe_pull_all(user=None, repository=None, branch=None, token=None,
 
     backup_size = 0
     for path in local_tree:
-        if path not in ignore:
+        if not _is_ignored(path, ignore):
             backup_size += _file_size(path) + len(path) + 80
 
     # we need space for: backup file + downloaded files + 4KB buffer
