@@ -109,6 +109,23 @@ def _file_size(filepath):
         return 0
 
 
+def _is_usb_cdc():
+    """Detect if this board likely uses native USB-CDC for serial.
+
+    USB-CDC boards (ESP32-S2, S3, C3, C6) lose their serial port on
+    machine.reset(). If boot.py/main.py crashes before USB re-enumerates,
+    the device becomes inaccessible and requires reflashing.
+    """
+    try:
+        machine_str = os.uname().machine.upper()
+        for chip in ('ESP32S3', 'ESP32S2', 'ESP32C6', 'ESP32C3'):
+            if chip in machine_str:
+                return True
+    except:
+        pass
+    return False
+
+
 def _is_ignored(path, ignore):
     """Check if path matches any ignore entry (exact or directory prefix).
 
@@ -317,7 +334,7 @@ def pull(filepath, raw_url, token=''):
 
 def pull_all(user=None, repository=None, branch=None, token=None,
              ssid=None, password=None, ignore=None,
-             isconnected=False, reset_after=True):
+             isconnected=False, reset_after=False):
     """
     Sync device filesystem with a GitHub repository.
 
@@ -336,7 +353,9 @@ def pull_all(user=None, repository=None, branch=None, token=None,
         password:     WiFi password
         ignore:       Extra file paths to never touch
         isconnected:  Set True if already connected to WiFi
-        reset_after:  Reset the device after update (default True)
+        reset_after:  Reset the device after update (default False).
+                      Ignored on USB-CDC boards (ESP32-S2/S3/C3/C6) to
+                      prevent bricking if boot code has errors.
     """
     c = _resolve_config(user, repository, branch, token, ssid, password, ignore)
     ignore = _ensure_ignore(c['ignore'])
@@ -425,9 +444,14 @@ def pull_all(user=None, repository=None, branch=None, token=None,
         pass
 
     if reset_after:
-        print('Resetting device in 5 seconds...')
-        time.sleep(5)
-        machine.reset()
+        if _is_usb_cdc():
+            print('WARNING: USB-CDC board detected (%s).' % os.uname().machine)
+            print('machine.reset() skipped — reset manually or power-cycle.')
+            print('Auto-reset can brick USB-CDC boards if boot.py/main.py crashes.')
+        else:
+            print('Resetting device in 5 seconds...')
+            time.sleep(5)
+            machine.reset()
 
     return log
 
@@ -630,7 +654,7 @@ def _restore_file(filepath, content):
 
 def safe_pull_all(user=None, repository=None, branch=None, token=None,
                   ssid=None, password=None, ignore=None,
-                  isconnected=False, reset_after=True):
+                  isconnected=False, reset_after=False):
     """
     Like pull_all(), but checks available storage first and creates a
     backup before updating. If the update fails, the backup remains
@@ -643,6 +667,9 @@ def safe_pull_all(user=None, repository=None, branch=None, token=None,
       4. Creates backup
       5. Runs the update
       6. If update fails, prints restore instructions
+
+    reset_after defaults to False. On USB-CDC boards (ESP32-S2/S3/C3/C6),
+    machine.reset() is always skipped to prevent bricking.
 
     Example:
         ugit.safe_pull_all()
@@ -709,8 +736,13 @@ def safe_pull_all(user=None, repository=None, branch=None, token=None,
 
     print('\nUpdate complete with backup at /ugit.backup')
     if reset_after:
-        print('Resetting device in 5 seconds...')
-        time.sleep(5)
-        machine.reset()
+        if _is_usb_cdc():
+            print('WARNING: USB-CDC board detected (%s).' % os.uname().machine)
+            print('machine.reset() skipped — reset manually or power-cycle.')
+            print('Auto-reset can brick USB-CDC boards if boot.py/main.py crashes.')
+        else:
+            print('Resetting device in 5 seconds...')
+            time.sleep(5)
+            machine.reset()
 
     return log
