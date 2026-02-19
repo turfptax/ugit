@@ -179,7 +179,7 @@ def _ensure_ignore(ignore):
     """Make sure config.json and ugit.py are always in the ignore list."""
     if ignore is None:
         ignore = []
-    protected = ['/ugit.py', _CONFIG_PATH, '/ugit.backup', '/ugit_log.txt', '/lib']
+    protected = ['/ugit.py', _CONFIG_PATH, '/ugit.backup', '/ugit_log.txt', '/lib', '/sd']
     for p in protected:
         if p not in ignore:
             ignore.append(p)

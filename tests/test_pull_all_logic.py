@@ -114,6 +114,26 @@ class TestPullAllDeleteLogic:
         assert '/lib/neopixel.mpy' not in self.deleted_files
         assert '/lib/ugit.py' not in self.deleted_files
 
+    def test_sd_directory_protected(self, monkeypatch):
+        """Files under /sd/ must never be deleted (mounted SD card data).
+
+        This is a regression test for the bug where ugit scanned into
+        mounted SD cards and deleted files not present in the GitHub repo.
+        """
+        monkeypatch.setattr(ugit, 'pull_git_tree', lambda *a, **kw:
+            make_git_tree([('main.py', 'sha1', 100)]))
+        monkeypatch.setattr(ugit, '_build_internal_tree', lambda: {
+            '/main.py': 'sha1',
+            '/sd/logs/watch.log': 'sha_log',
+            '/sd/data.csv': 'sha_csv',
+            '/sd/recordings/audio_001.wav': 'sha_wav',
+        })
+
+        ugit.pull_all(user='u', repository='r', isconnected=True)
+        assert '/sd/logs/watch.log' not in self.deleted_files
+        assert '/sd/data.csv' not in self.deleted_files
+        assert '/sd/recordings/audio_001.wav' not in self.deleted_files
+
     def test_unchanged_files_not_downloaded(self, monkeypatch):
         """Files with matching SHA should not be re-downloaded."""
         monkeypatch.setattr(ugit, 'pull_git_tree', lambda *a, **kw:

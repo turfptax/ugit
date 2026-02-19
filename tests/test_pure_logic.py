@@ -108,7 +108,7 @@ class TestEnsureIgnore:
 
     def test_empty_list(self):
         result = ugit._ensure_ignore([])
-        assert len(result) == 5  # 5 protected entries
+        assert len(result) == 6  # 6 protected entries
 
     def test_preserves_user_entries(self):
         result = ugit._ensure_ignore(['/my_data.json'])
@@ -122,7 +122,7 @@ class TestEnsureIgnore:
 
     def test_all_protected_files_present(self):
         result = ugit._ensure_ignore([])
-        expected = {'/ugit.py', '/config.json', '/ugit.backup', '/ugit_log.txt', '/lib'}
+        expected = {'/ugit.py', '/config.json', '/ugit.backup', '/ugit_log.txt', '/lib', '/sd'}
         assert expected == set(result)
 
 
