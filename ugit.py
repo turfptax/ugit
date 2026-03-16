@@ -19,7 +19,7 @@
 # This file is auto-ignored so ugit will never delete or overwrite it.
 # NEVER commit config.json to your GitHub repository.
 
-__version__ = '2.1.0'
+__version__ = '2.1.1'
 
 import os
 import urequests
@@ -29,11 +29,17 @@ import binascii
 import machine
 import time
 import network
+import uerrno
 
 _GITHUB_API = 'https://api.github.com/repos'
 _GITHUB_RAW = 'https://raw.githubusercontent.com'
 _USER_AGENT = 'ugit-turfptax'
 _CONFIG_PATH = '/config.json'
+
+# Retry configuration for OTA updates
+_DEFAULT_TIMEOUT = 10  # seconds
+_DEFAULT_MAX_RETRIES = 3
+_DEFAULT_RETRY_DELAY = 2  # seconds between retries
 
 
 def _headers(token=''):
@@ -41,6 +47,56 @@ def _headers(token=''):
     if token:
         h['authorization'] = 'bearer %s' % token
     return h
+
+
+def _request_with_retry(method, url, headers=None, retries=_DEFAULT_MAX_RETRIES,
+                         timeout=_DEFAULT_TIMEOUT, delay=_DEFAULT_RETRY_DELAY):
+    """
+    Make an HTTP request with timeout and automatic retry on failure.
+    
+    Args:
+        method: HTTP method ('GET', etc.)
+        url: Target URL
+        headers: Optional dict of headers
+        retries: Number of retry attempts on failure (default 3)
+        timeout: Request timeout in seconds (default 10)
+        delay: Seconds to wait between retries (default 2)
+    
+    Returns:
+        Response object from urequests
+    
+    Raises:
+        Last exception if all retries fail
+    """
+    last_error = None
+    for attempt in range(retries + 1):
+        try:
+            if method.upper() == 'GET':
+                response = urequests.get(url, headers=headers, timeout=timeout)
+            else:
+                raise ValueError('Unsupported HTTP method: %s' % method)
+            return response
+        except Exception as e:
+            last_error = e
+            err_str = str(e).lower()
+            # Check if it's a network-related error worth retrying
+            is_retryable = (
+                'timeout' in err_str or
+                'ehostunreach' in err_str or
+                'enetunreach' in err_str or
+                'connection' in err_str or
+                'reset' in err_str or
+                'errno' in err_str
+            )
+            if attempt < retries and is_retryable:
+                print('  Retry %d/%d after error: %s' % (attempt + 1, retries, str(e)))
+                time.sleep(delay)
+            else:
+                # No more retries or non-retryable error
+                if attempt > 0:
+                    print('  Request failed after %d attempts: %s' % (attempt + 1, str(e)))
+                raise
+    raise last_error  # Should not reach here, but just in case
 
 
 def _git_blob_hash(data):
@@ -292,7 +348,7 @@ def wificonnect(ssid=None, password=None):
 def pull_git_tree(user, repository, branch='main', token=''):
     """Fetch the full recursive tree from GitHub API."""
     url = '%s/%s/%s/git/trees/%s?recursive=1' % (_GITHUB_API, user, repository, branch)
-    r = urequests.get(url, headers=_headers(token))
+    r = _request_with_retry('GET', url, headers=_headers(token))
     data = json.loads(r.content.decode('utf-8'))
     r.close()
     if 'tree' not in data:
@@ -302,7 +358,7 @@ def pull_git_tree(user, repository, branch='main', token=''):
 
 def pull(filepath, raw_url, token=''):
     """Download a single file from GitHub and write it to the device."""
-    r = urequests.get(raw_url, headers=_headers(token))
+    r = _request_with_retry('GET', raw_url, headers=_headers(token))
     data = r.content
     r.close()
     # ensure parent directory exists
