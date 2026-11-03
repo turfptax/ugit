@@ -52,15 +52,33 @@ def _git_blob_hash(data):
     return binascii.hexlify(sha.digest()).decode('utf-8')
 
 
+_CHUNK = 512
+
+
 def _local_file_hash(filepath):
-    """Get the GitHub-compatible blob SHA1 of a local file."""
+    """Get the GitHub-compatible blob SHA1 of a local file.
+
+    Streams the file in small chunks so memory use stays constant
+    regardless of file size (reading a whole file plus the header
+    concatenation can need 2x the file size in contiguous RAM).
+    """
     try:
+        size = os.stat(filepath)[6]
+        sha = hashlib.sha1(('blob %d\0' % size).encode('utf-8'))
+        buf = bytearray(_CHUNK)
+        mv = memoryview(buf)
         f = open(filepath, 'rb')
-        data = f.read()
-        f.close()
-    except:
-        data = b''
-    return _git_blob_hash(data)
+        try:
+            while True:
+                n = f.readinto(buf)
+                if not n:
+                    break
+                sha.update(mv[:n])
+        finally:
+            f.close()
+    except OSError:
+        return _git_blob_hash(b'')
+    return binascii.hexlify(sha.digest()).decode('utf-8')
 
 
 def _is_directory(path):
@@ -301,10 +319,13 @@ def pull_git_tree(user, repository, branch='main', token=''):
 
 
 def pull(filepath, raw_url, token=''):
-    """Download a single file from GitHub and write it to the device."""
-    r = urequests.get(raw_url, headers=_headers(token))
-    data = r.content
-    r.close()
+    """Download a single file from GitHub and write it to the device.
+
+    The response is streamed to a temporary file in small chunks and then
+    moved into place, so memory use is constant regardless of file size and
+    an interrupted download never leaves a truncated file behind.
+    Returns the number of bytes written.
+    """
     # ensure parent directory exists
     parts = filepath.split('/')
     for i in range(1, len(parts)):
@@ -314,10 +335,38 @@ def pull(filepath, raw_url, token=''):
                 os.mkdir(d)
             except:
                 pass
-    f = open(filepath, 'wb')
-    f.write(data)
-    f.close()
-    return data
+    tmp = filepath + '.ugit_tmp'
+    r = urequests.get(raw_url, headers=_headers(token))
+    try:
+        if r.status_code != 200:
+            raise Exception('HTTP %s for %s' % (r.status_code, raw_url))
+        written = 0
+        buf = bytearray(_CHUNK)
+        mv = memoryview(buf)
+        f = open(tmp, 'wb')
+        try:
+            while True:
+                n = r.raw.readinto(buf)
+                if not n:
+                    break
+                f.write(mv[:n])
+                written += n
+        finally:
+            f.close()
+    except:
+        try:
+            os.remove(tmp)
+        except:
+            pass
+        raise
+    finally:
+        r.close()
+    try:
+        os.remove(filepath)
+    except OSError:
+        pass
+    os.rename(tmp, filepath)
+    return written
 
 
 def pull_all(user=None, repository=None, branch=None, token=None,
@@ -519,6 +568,33 @@ def update(branch=None, token=None):
     print('ugit updated at %s from branch %s. Reset device to use new version.' % (dest, branch))
 
 
+def _copy_utf8(src, dst):
+    """Copy a binary file object to a text file object in small chunks.
+
+    Raises ValueError if the data is not valid UTF-8, mirroring the old
+    read()+decode() behavior without holding the whole file in memory.
+    """
+    carry = b''
+    while True:
+        chunk = src.read(_CHUNK)
+        if not chunk:
+            break
+        chunk = carry + chunk
+        # a multi-byte character may be split across chunks: hold back up to 3 bytes
+        for cut in range(4):
+            try:
+                text = chunk[:len(chunk) - cut].decode('utf-8')
+            except ValueError:
+                continue
+            carry = chunk[len(chunk) - cut:]
+            break
+        else:
+            raise ValueError('not utf-8')
+        dst.write(text)
+    if carry:
+        raise ValueError('not utf-8')
+
+
 def backup(ignore=None):
     """Backup all files on the device to /ugit.backup.
     Returns the number of files backed up, or -1 if not enough space."""
@@ -547,16 +623,18 @@ def backup(ignore=None):
         f.write('FILE:%s SHA:%s\n' % (path, sha))
         try:
             df = open(path, 'rb')
-            content = df.read()
-            df.close()
-            try:
-                f.write('---\n')
-                f.write(content.decode('utf-8'))
-                f.write('\n---\n')
-            except:
-                f.write('---BINARY:%d---\n' % len(content))
         except:
             f.write('---ERROR---\n')
+            continue
+        f.write('---\n')
+        try:
+            _copy_utf8(df, f)
+            f.write('\n---\n')
+        except:
+            # binary (or unreadable) file: restore() skips any entry
+            # that ends in a ---BINARY marker, discarding partial content
+            f.write('\n---BINARY:%d---\n' % _file_size(path))
+        df.close()
     f.close()
     print('Backup saved to /ugit.backup (%d files, ~%s)' % (
         file_count, _fmt_size(backup_size)))
