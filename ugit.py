@@ -1,4 +1,4 @@
-# ugit v2.0
+# ugit v2.2
 # MicroPython OTA update from GitHub
 # Created by TURFPTAx for the OpenMuscle project
 # https://openmuscle.org
@@ -19,7 +19,7 @@
 # This file is auto-ignored so ugit will never delete or overwrite it.
 # NEVER commit config.json to your GitHub repository.
 
-__version__ = '2.1.0'
+__version__ = '2.2.0'
 
 import os
 import urequests

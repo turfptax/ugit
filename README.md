@@ -17,7 +17,13 @@
 
 ugit syncs the entire file structure of an ESP32 (or any MicroPython board with WiFi) with a GitHub repository. Use it for OTA updates of your IoT devices in the field.
 
-**What's new in v2.1:**
+**What's new in v2.2:**
+* **Low-memory updates:** hashing, downloads and backups stream in 512-byte chunks, so `pull_all()` works on small-RAM boards like the Pico W (thanks [@faludi](https://github.com/faludi))
+* **Safer downloads:** files are replaced only after a download finishes, and HTTP errors no longer overwrite files
+* **SD card protection:** `/sd` is auto-protected, so `pull_all()` never deletes files on a mounted SD card
+* **`pull()` returns bytes written** instead of the file contents
+
+**Also in v2.1:**
 * **Directory-level ignore** — `/lib` in the ignore list protects all files under it (mip packages safe)
 * **USB-CDC board safety** — auto-detects ESP32-S2/S3/C3/C6/H2 and skips `machine.reset()` to prevent bricking
 * **Automated test suite** — 65 pytest tests with GitHub Actions CI on every push/PR
